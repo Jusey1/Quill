@@ -1,0 +1,21 @@
+{
+  "description": {
+    "translate": "enchantment.quill.sharpshooter"
+  },
+  "supported_items": "#minecraft:enchantable/crossbow",
+  "exclusive_set": "#minecraft:exclusive_set/crossbow",
+  "max_cost": {
+    "base": 50,
+    "per_level_above_first": 5
+  },
+  "min_cost": {
+    "base": 1,
+    "per_level_above_first": 10
+  },
+  "slots": [
+    "mainhand"
+  ],
+  "anvil_cost": 1,
+  "max_level": 5,
+  "weight": 10
+}
