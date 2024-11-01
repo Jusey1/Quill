@@ -10,6 +10,7 @@ public class QuillConfig {
 	public static final ModConfigSpec.BooleanValue USER;
 	public static final ModConfigSpec.BooleanValue POTS;
 	public static final ModConfigSpec.BooleanValue FARMER;
+	public static final ModConfigSpec.BooleanValue VAULT;
 
 	public static final ModConfigSpec.BooleanValue DEATH;
 	public static final ModConfigSpec.BooleanValue CREEPER;
@@ -24,6 +25,7 @@ public class QuillConfig {
 	public static final ModConfigSpec.BooleanValue ENCHS;
 	public static final ModConfigSpec.IntValue MAXENCH;
 	public static final ModConfigSpec.BooleanValue UNBREAKING;
+	public static final ModConfigSpec.BooleanValue REPAIR;
 	public static final ModConfigSpec.BooleanValue ANBOOK;
 	public static final ModConfigSpec.IntValue MAXANBOOKCOST;
 	public static final ModConfigSpec.BooleanValue RENAME;
@@ -34,6 +36,7 @@ public class QuillConfig {
 		USER = BUILDER.comment("Should basic items get a cooldown during use after being hit by an enemy?").define("Basic Cooldown", true);
 		POTS = BUILDER.comment("Should potions be stackable?").define("Stackable Potions", true);
 		FARMER = BUILDER.comment("Should hoes have the ability to harvest crops?").define("Hoe Harvesting", true);
+		VAULT = BUILDER.comment("Should Vaults be reusable by the player?").define("Better Vaults", false);
 		BUILDER.pop();
 		BUILDER.push("Player & Entity Configuration");
 		DEATH = BUILDER.comment("Should hotbar & equipment be kept on death?").define("Death Protection", true);
@@ -50,6 +53,7 @@ public class QuillConfig {
 		ENCHS = BUILDER.comment("Should this mod's enchantment rework be in effect?").define("Enchantments Rework", true);
 		MAXENCH = BUILDER.comment("How many enchantments should be applicable to an item?").defineInRange("Max Enchantments", 3, 0, 25);
 		UNBREAKING = BUILDER.comment("Should enchanted equipment be unbreakable?").define("Unbreaking Protection", true);
+		REPAIR = BUILDER.comment("Should repairing equipment be better & only costing 1 level?").define("Better Anvil Repair", true);
 		ANBOOK = BUILDER.comment("Should this mod adjust combining enchanted items on an anvil?").define("Better Anvil Enchanting", true);
 		MAXANBOOKCOST = BUILDER.comment("Maximum cost on an anvil when combining?").defineInRange("Max Anvil Cost", 15, 0, 45);
 		RENAME = BUILDER.comment("Should renaming always only cost 1 level?").define("Better Anvil Renaming", true);

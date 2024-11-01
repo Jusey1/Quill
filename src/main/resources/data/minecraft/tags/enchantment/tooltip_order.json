@@ -1,11 +1,11 @@
 {
   "replace": false,
   "values": [
-    "quill:curse_of_zombie",
-    "quill:auto_smelt",
     "quill:sharpshooter",
+    "quill:deflecting",
     "quill:spikes",
     "quill:blazing",
-    "quill:deflecting"
+    "quill:auto_smelt",
+    "quill:curse_of_zombie"
   ]
 }
