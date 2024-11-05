@@ -95,13 +95,13 @@ public class QuillEvents {
 			if (direct instanceof Projectile proj) {
 				if (proj.getPersistentData().getDouble("Sharpshooter") > 0) {
 					double x = direct.getPersistentData().getDouble("Sharpshooter");
-					event.setNewDamage((float) (Math.round(Mth.nextInt(direct.getRandom(), 7, 11)) + (2.5 * x)));
+					event.setNewDamage((float) (Math.round(Mth.nextInt(RandomSource.create(), 7, 11)) + (2.5 * x)));
 				}
 			} else if (direct instanceof LivingEntity && target.isUsingItem() && QuillConfig.USER.get()) {
 				if (target.getUseItem().getUseDuration(target) <= 64) {
 					target.stopUsingItem();
 					if (target instanceof Player player) {
-						player.getCooldowns().addCooldown(target.getUseItem().getItem(), 12);
+						player.getCooldowns().addCooldown(target.getUseItem(), 12);
 					}
 				}
 			}
@@ -111,8 +111,8 @@ public class QuillEvents {
 	@SubscribeEvent
 	public static void onDeath(LivingDeathEvent event) {
 		if (event.getEntity().getType() == EntityType.MAGMA_CUBE && event.getSource().getEntity() instanceof Frog frog) {
-			if (frog.getVariant() == QuillFrogs.WITCH) {
-				event.getEntity().spawnAtLocation(new ItemStack(QuillItems.AZURE.get()));
+			if (frog.getVariant() == QuillFrogs.WITCH && event.getEntity().level() instanceof ServerLevel lvl) {
+				event.getEntity().spawnAtLocation(lvl, new ItemStack(QuillItems.AZURE.get()));
 			}
 		}
 	}
@@ -152,7 +152,7 @@ public class QuillEvents {
 					}
 					event.getEntity().stopUsingItem();
 					if (event.getEntity() instanceof Player player) {
-						player.getCooldowns().addCooldown(stack.getItem(), 600);
+						player.getCooldowns().addCooldown(stack, 600);
 					}
 					for (Zombie billy : event.getEntity().level().getEntitiesOfClass(Zombie.class, event.getEntity().getBoundingBox().inflate(64.0D))) {
 						if (billy.level() instanceof ServerLevel lvl) {
@@ -187,7 +187,7 @@ public class QuillEvents {
 
 	@SubscribeEvent
 	public static void onMobSpawned(MobSpawnEvent.PositionCheck event) {
-		if (QuillConfig.CAMPFIRE.get() && event.getEntity() instanceof Enemy && event.getSpawnType() == MobSpawnType.NATURAL && QuillManager.getCampfire(event.getLevel(), event.getEntity().blockPosition(), 64)) {
+		if (QuillConfig.CAMPFIRE.get() && event.getEntity() instanceof Enemy && event.getSpawnType() == EntitySpawnReason.NATURAL && QuillManager.getCampfire(event.getLevel(), event.getEntity().blockPosition(), 64)) {
 			event.setResult(MobSpawnEvent.PositionCheck.Result.FAIL);
 		}
 	}
@@ -283,7 +283,7 @@ public class QuillEvents {
 					for (ItemStack item : drops) {
 						if (item.is(Tags.Items.CROPS)) {
 							lvl.addFreshEntity(new ItemEntity(lvl, x, y, z, item));
-							if (base.getFoodProperties(player) == null && f > 0) {
+							if (base.get(DataComponents.FOOD) == null && f > 0) {
 								if (Math.random() <= 0.56) {
 									int i = Mth.nextInt(RandomSource.create(), 0, f);
 									if (i > 0) {
@@ -416,9 +416,9 @@ public class QuillEvents {
 			Block target = state.getBlock();
 			List<ItemStack> drops = target.getDrops(state, lvl, pos, null, player, stack);
 			for (ItemStack item : drops) {
-				Optional<RecipeHolder<SmeltingRecipe>> recipe = lvl.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(item), lvl);
+				Optional<RecipeHolder<SmeltingRecipe>> recipe = lvl.getServer().getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(item), lvl);
 				if (recipe.isPresent()) {
-					ItemStack smelt = recipe.get().value().getResultItem(lvl.registryAccess()).copy();
+					ItemStack smelt = recipe.get().value().assemble(new SingleRecipeInput(item), lvl.registryAccess());
 					smelt.setCount(item.getCount());
 					lvl.addFreshEntity(new ItemEntity(lvl, x, y, z, smelt));
 					if (!event.isCanceled()) {

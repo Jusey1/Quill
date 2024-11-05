@@ -1,5 +1,8 @@
 package net.salju.quill.mixins;
 
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.ExplosionDamageCalculator;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.At;
@@ -11,11 +14,9 @@ import net.salju.quill.network.Fireworks;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.entity.monster.Creeper;
-import net.minecraft.world.level.Level;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.core.particles.ParticleTypes;
 
 @Mixin(Creeper.class)
 public abstract class CreeperMixin {

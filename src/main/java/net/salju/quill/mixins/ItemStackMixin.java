@@ -6,6 +6,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.Mixin;
 import net.salju.quill.init.QuillConfig;
 import net.salju.quill.init.QuillTags;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.enchantment.Enchantable;
 import net.minecraft.world.item.PotionItem;
 import net.minecraft.world.item.ItemStack;
 
@@ -26,6 +28,9 @@ public abstract class ItemStackMixin {
 		if (QuillConfig.ENCHS.get()) {
 			ItemStack stack = (ItemStack) (Object) this;
 			if (stack.is(QuillTags.ENCHS) && !stack.isEnchanted()) {
+				if (!stack.has(DataComponents.ENCHANTABLE)) {
+					stack.set(DataComponents.ENCHANTABLE, new Enchantable(1));
+				}
 				ci.setReturnValue(true);
 			}
 		}

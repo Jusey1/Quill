@@ -1,15 +1,11 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "K"
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:kelp"
   ],
-  "key": {
-    "K": {
-      "item": "minecraft:kelp"
-    }
-  },
   "result": {
-    "id": "minecraft:green_dye",
-    "count": 1
+    "count": 1,
+    "id": "minecraft:green_dye"
   }
 }

@@ -14,6 +14,7 @@ import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.monster.Witch;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 
 @Mixin(Witch.class)
@@ -22,8 +23,8 @@ public abstract class WitchMixin {
 	private void step(CallbackInfo ci) {
 		if (QuillConfig.FROGGO.get()) {
 			Witch hag = (Witch) (Object) this;
-			if (!hag.level().isClientSide && hag.isAlive()) {
-				Villager trader = hag.level().getNearestEntity(Villager.class, TargetingConditions.DEFAULT, hag, hag.getX(), hag.getY(), hag.getZ(), hag.getBoundingBox().inflate(12.85D));
+			if (hag.level() instanceof ServerLevel lvl && hag.isAlive()) {
+				Villager trader = lvl.getNearestEntity(Villager.class, TargetingConditions.DEFAULT, hag, hag.getX(), hag.getY(), hag.getZ(), hag.getBoundingBox().inflate(12.85D));
 				if (trader != null && trader.getVillagerData().getProfession() == VillagerProfession.NITWIT) {
 					hag.setTarget(trader);
 				}
@@ -36,12 +37,11 @@ public abstract class WitchMixin {
 		if (QuillConfig.FROGGO.get()) {
 			Witch hag = (Witch) (Object) this;
 			if (target instanceof Villager trader && trader.getVillagerData().getProfession() == VillagerProfession.NITWIT && !hag.isDrinkingPotion()) {
-				ThrownPotion pot = new ThrownPotion(hag.level(), hag);
+				ThrownPotion pot = new ThrownPotion(hag.level(), hag, PotionContents.createItemStack(Items.SPLASH_POTION, QuillPotions.FROGGO));
 				double d0 = trader.getX() + trader.getDeltaMovement().x - hag.getX();
 				double d1 = trader.getEyeY() - (double) 1.1F - hag.getY();
 				double d2 = trader.getZ() + trader.getDeltaMovement().z - hag.getZ();
 				double d3 = Math.sqrt(d0 * d0 + d2 * d2);
-				pot.setItem(PotionContents.createItemStack(Items.SPLASH_POTION, QuillPotions.FROGGO));
 				pot.setXRot(pot.getXRot() + 20.0F);
 				pot.shoot(d0, d1 + d3 * 0.2D, d2, 0.75F, 8.0F);
 				if (!hag.isSilent()) {

@@ -12,7 +12,7 @@ public abstract class VaultServerDataMixin {
 	@Inject(method = "addToRewardedPlayers", at = @At("HEAD"), cancellable = true)
 	private void data(CallbackInfo ci) {
 		if (QuillConfig.VAULT.get()) {
-			ci.cancel();;
+			ci.cancel();
 		}
 	}
 }

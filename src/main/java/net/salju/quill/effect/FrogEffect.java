@@ -7,6 +7,7 @@ import net.minecraft.world.entity.animal.frog.Frog;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -29,10 +30,10 @@ public class FrogEffect extends MobEffect {
 	}
 
 	@Override
-	public void applyInstantenousEffect(Entity direct, Entity owner, LivingEntity target, int i, double d) {
-		if (target instanceof Villager && target.level() instanceof ServerLevel lvl) {
+	public void applyInstantenousEffect(ServerLevel lvl, Entity direct, Entity owner, LivingEntity target, int i, double d) {
+		if (target instanceof Villager) {
 			lvl.playSound(null, target.blockPosition(), SoundEvents.ILLUSIONER_CAST_SPELL, SoundSource.HOSTILE, 1.0F, 1.0F);
-			Frog froggo = EntityType.FROG.create(lvl);
+			Frog froggo = EntityType.FROG.create(lvl, EntitySpawnReason.CONVERSION);
 			froggo.moveTo(Vec3.atBottomCenterOf(target.blockPosition()));
 			froggo.addEffect(new MobEffectInstance(MobEffects.LUCK, 3600, 0, false, true));
 			froggo.setVariant(QuillFrogs.WITCH);
