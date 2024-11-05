@@ -4,7 +4,7 @@ license="MIT License"
 
 [[mods]]
 modId="quill"
-version="2.0.3"
+version="2.1.3"
 displayName="Salju's Quill"
 displayURL="https://discord.gg/s7QaYGUzZU"
 logoFile="logo.png"
@@ -18,6 +18,6 @@ config="quill.mixins.json"
 [[dependencies.quill]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.21.1]"
+    versionRange="[1.21.2,)"
     ordering="NONE"
     side="BOTH"
