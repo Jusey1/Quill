@@ -10,6 +10,7 @@ public class QuillConfig {
 	public static final ModConfigSpec.BooleanValue USER;
 	public static final ModConfigSpec.BooleanValue POTS;
 	public static final ModConfigSpec.BooleanValue FARMER;
+	public static final ModConfigSpec.BooleanValue WEAPONS;
 	public static final ModConfigSpec.BooleanValue VAULT;
 
 	public static final ModConfigSpec.BooleanValue DEATH;
@@ -36,6 +37,7 @@ public class QuillConfig {
 		USER = BUILDER.comment("Should basic items get a cooldown during use after being hit by an enemy?").define("Basic Cooldown", true);
 		POTS = BUILDER.comment("Should potions be stackable?").define("Stackable Potions", true);
 		FARMER = BUILDER.comment("Should hoes have the ability to harvest crops?").define("Hoe Harvesting", true);
+		WEAPONS = BUILDER.comment("Should some weapons have their stats tweaked by this mod?").define("Weapons Rebalanced", true);
 		VAULT = BUILDER.comment("Should Vaults be reusable by the player?").define("Better Vaults", false);
 		BUILDER.pop();
 		BUILDER.push("Player & Entity Configuration");

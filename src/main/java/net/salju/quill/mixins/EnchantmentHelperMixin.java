@@ -25,7 +25,7 @@ public abstract class EnchantmentHelperMixin {
 			if (target instanceof Animal animal) {
 				ItemStack stack = animal.getBodyArmorItem();
 				if (!stack.isEmpty() && stack.isEnchanted() && stack.getItem() instanceof ArmorItem armor) {
-					EnchantmentHelper.runIterationOnItem(stack, animal.getType().is(QuillTags.BOOTS) ? EquipmentSlot.FEET : armor.getEquipmentSlot(stack), target, v);
+					EnchantmentHelper.runIterationOnItem(stack, animal.getType().is(QuillTags.BOOTS) ? EquipmentSlot.FEET : armor.getEquipmentSlot(), target, v);
 				}
 			}
 		}

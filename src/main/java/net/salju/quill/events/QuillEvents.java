@@ -12,6 +12,7 @@ import net.neoforged.neoforge.event.AnvilUpdateEvent;
 import net.neoforged.neoforge.event.GrindstoneEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 import net.neoforged.neoforge.event.entity.EntityMobGriefingEvent;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
@@ -27,13 +28,14 @@ import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.HoeItem;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -44,13 +46,6 @@ import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.animal.frog.Frog;
-import net.minecraft.world.entity.TamableAnimal;
-import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ExperienceOrb;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Mth;
@@ -100,13 +95,13 @@ public class QuillEvents {
 			if (direct instanceof Projectile proj) {
 				if (proj.getPersistentData().getDouble("Sharpshooter") > 0) {
 					double x = direct.getPersistentData().getDouble("Sharpshooter");
-					event.setNewDamage((float) (Math.round(Mth.nextInt(RandomSource.create(), 7, 11)) + (2.5 * x)));
+					event.setNewDamage((float) (Math.round(Mth.nextInt(direct.getRandom(), 7, 11)) + (2.5 * x)));
 				}
 			} else if (direct instanceof LivingEntity && target.isUsingItem() && QuillConfig.USER.get()) {
 				if (target.getUseItem().getUseDuration(target) <= 64) {
 					target.stopUsingItem();
 					if (target instanceof Player player) {
-						player.getCooldowns().addCooldown(target.getUseItem(), 12);
+						player.getCooldowns().addCooldown(target.getUseItem().getItem(), 12);
 					}
 				}
 			}
@@ -116,8 +111,8 @@ public class QuillEvents {
 	@SubscribeEvent
 	public static void onDeath(LivingDeathEvent event) {
 		if (event.getEntity().getType() == EntityType.MAGMA_CUBE && event.getSource().getEntity() instanceof Frog frog) {
-			if (frog.getVariant() == QuillFrogs.WITCH && event.getEntity().level() instanceof ServerLevel lvl) {
-				event.getEntity().spawnAtLocation(lvl, new ItemStack(QuillItems.AZURE.get()));
+			if (frog.getVariant() == QuillFrogs.WITCH) {
+				event.getEntity().spawnAtLocation(new ItemStack(QuillItems.AZURE.get()));
 			}
 		}
 	}
@@ -132,7 +127,7 @@ public class QuillEvents {
 
 	@SubscribeEvent
 	public static void onBlockAttack(LivingShieldBlockEvent event) {
-		if (event.getEntity() != null && event.getDamageSource().getDirectEntity() != null) {
+		if (event.getDamageSource().getDirectEntity() != null) {
 			ItemStack stack = event.getEntity().getUseItem();
 			if (event.getDamageSource().getDirectEntity() instanceof LivingEntity target) {
 				int i = QuillManager.getEnchantmentLevel(stack, target.level(), Quill.MODID, "spikes");
@@ -157,7 +152,7 @@ public class QuillEvents {
 					}
 					event.getEntity().stopUsingItem();
 					if (event.getEntity() instanceof Player player) {
-						player.getCooldowns().addCooldown(stack, 600);
+						player.getCooldowns().addCooldown(stack.getItem(), 600);
 					}
 					for (Zombie billy : event.getEntity().level().getEntitiesOfClass(Zombie.class, event.getEntity().getBoundingBox().inflate(64.0D))) {
 						if (billy.level() instanceof ServerLevel lvl) {
@@ -192,7 +187,7 @@ public class QuillEvents {
 
 	@SubscribeEvent
 	public static void onMobSpawned(MobSpawnEvent.PositionCheck event) {
-		if (QuillConfig.CAMPFIRE.get() && event.getEntity() instanceof Enemy && event.getSpawnType() == EntitySpawnReason.NATURAL && QuillManager.getCampfire(event.getLevel(), event.getEntity().blockPosition(), 64)) {
+		if (QuillConfig.CAMPFIRE.get() && event.getEntity() instanceof Enemy && event.getSpawnType() == MobSpawnType.NATURAL && QuillManager.getCampfire(event.getLevel(), event.getEntity().blockPosition(), 64)) {
 			event.setResult(MobSpawnEvent.PositionCheck.Result.FAIL);
 		}
 	}
@@ -288,7 +283,7 @@ public class QuillEvents {
 					for (ItemStack item : drops) {
 						if (item.is(Tags.Items.CROPS)) {
 							lvl.addFreshEntity(new ItemEntity(lvl, x, y, z, item));
-							if (base.get(DataComponents.FOOD) == null && f > 0) {
+							if (base.getFoodProperties(player) == null && f > 0) {
 								if (Math.random() <= 0.56) {
 									int i = Mth.nextInt(RandomSource.create(), 0, f);
 									if (i > 0) {
@@ -304,6 +299,24 @@ public class QuillEvents {
 							}
 						}
 					}
+				}
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void onAttributes(ItemAttributeModifierEvent event) {
+		if (QuillConfig.WEAPONS.get()) {
+			if (event.getItemStack().is(Items.MACE) || event.getItemStack().is(Items.TRIDENT)) {
+				event.replaceModifier(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_ID, -2.8F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+			} else if (event.getItemStack().is(QuillTags.AXES)) {
+				event.replaceModifier(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_ID, -3.0F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+				if (event.getItemStack().is(Items.IRON_AXE)) {
+					event.replaceModifier(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, 7.0F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+				} else if (event.getItemStack().is(Items.STONE_AXE)) {
+					event.replaceModifier(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, 6.0F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+				} else if (event.getItemStack().is(Items.WOODEN_AXE) || event.getItemStack().is(Items.GOLDEN_AXE)) {
+					event.replaceModifier(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, 5.0F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
 				}
 			}
 		}
@@ -332,7 +345,14 @@ public class QuillEvents {
 	@SubscribeEvent
 	public static void onAnvil(AnvilUpdateEvent event) {
 		if (QuillConfig.ENCHS.get()) {
-			if (QuillConfig.ANBOOK.get() && (event.getLeft().isEnchantable() || event.getLeft().is(Items.ENCHANTED_BOOK) || event.getLeft().isEnchanted()) && (event.getRight().is(Items.ENCHANTED_BOOK) || (event.getRight().is(event.getLeft().getItem()) && event.getRight().isEnchanted()))) {
+			if (QuillConfig.REPAIR.get() && QuillManager.isValidRepairItem(event.getLeft(), event.getRight()) && event.getLeft().isDamaged()) {
+				ItemStack stack = event.getLeft().copy();
+				int i = (stack.getDamageValue() > (stack.getMaxDamage() / 2) && event.getRight().getCount() > 1) ? 2 : 1;
+				stack.setDamageValue(Math.max(stack.getDamageValue() - ((stack.getMaxDamage() / 2) * i), 0));
+				event.setCost(i);
+				event.setMaterialCost(i);
+				event.setOutput(stack);
+			} else if (QuillConfig.ANBOOK.get() && (event.getLeft().isEnchantable() || event.getLeft().is(Items.ENCHANTED_BOOK) || event.getLeft().isEnchanted()) && (event.getRight().is(Items.ENCHANTED_BOOK) || (event.getRight().is(event.getLeft().getItem()) && event.getRight().isEnchanted()))) {
 				ItemEnchantments.Mutable map = event.getLeft().isEnchanted() || event.getLeft().is(Items.ENCHANTED_BOOK) ? new ItemEnchantments.Mutable(EnchantmentHelper.getEnchantmentsForCrafting(event.getLeft().copy())) : new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
 				ItemEnchantments.Mutable book = new ItemEnchantments.Mutable(EnchantmentHelper.getEnchantmentsForCrafting(event.getRight()));
 				int i = 0;
@@ -396,9 +416,9 @@ public class QuillEvents {
 			Block target = state.getBlock();
 			List<ItemStack> drops = target.getDrops(state, lvl, pos, null, player, stack);
 			for (ItemStack item : drops) {
-				Optional<RecipeHolder<SmeltingRecipe>> recipe = lvl.getServer().getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(item), lvl);
+				Optional<RecipeHolder<SmeltingRecipe>> recipe = lvl.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(item), lvl);
 				if (recipe.isPresent()) {
-					ItemStack smelt = recipe.get().value().assemble(new SingleRecipeInput(item), lvl.registryAccess());
+					ItemStack smelt = recipe.get().value().getResultItem(lvl.registryAccess()).copy();
 					smelt.setCount(item.getCount());
 					lvl.addFreshEntity(new ItemEntity(lvl, x, y, z, smelt));
 					if (!event.isCanceled()) {

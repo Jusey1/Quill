@@ -1,6 +1,5 @@
 package net.salju.quill.item;
 
-import net.minecraft.world.InteractionResult;
 import net.salju.quill.init.QuillData;
 import net.salju.quill.item.component.*;
 import net.minecraft.network.chat.Component;
@@ -11,6 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.Entity;
@@ -22,6 +22,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.Mth;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.List;
@@ -61,7 +62,7 @@ public class BundleHoldingItem extends Item {
 
 	@Override
 	public int getBarColor(ItemStack stack) {
-		return 6711039;
+		return Mth.color(0.4F, 0.4F, 1.0F);
 	}
 
 	@Override
@@ -133,14 +134,14 @@ public class BundleHoldingItem extends Item {
 	}
 
 	@Override
-	public InteractionResult use(Level world, Player player, InteractionHand hand) {
+	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 		if (dropContents(stack, player)) {
 			this.playSound(player, SoundEvents.BUNDLE_DROP_CONTENTS);
 			player.awardStat(Stats.ITEM_USED.get(this));
-			return InteractionResult.SUCCESS;
+			return InteractionResultHolder.sidedSuccess(stack, world.isClientSide());
 		} else {
-			return InteractionResult.FAIL;
+			return InteractionResultHolder.fail(stack);
 		}
 	}
 

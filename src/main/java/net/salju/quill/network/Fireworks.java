@@ -11,6 +11,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.core.BlockPos;
 
+
 public record Fireworks(BlockPos pos) implements CustomPacketPayload {
 	public static final Type<Fireworks> CREEPER_FIREWORKS = new Type<>(ResourceLocation.fromNamespaceAndPath(Quill.MODID, "creeper_fireworks"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, Fireworks> STREAM_CODEC = StreamCodec.of((RegistryFriendlyByteBuf buffer, Fireworks message) -> {

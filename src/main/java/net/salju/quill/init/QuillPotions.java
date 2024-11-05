@@ -9,5 +9,5 @@ import net.minecraft.world.effect.MobEffectInstance;
 
 public class QuillPotions {
 	public static final DeferredRegister<Potion> REGISTRY = DeferredRegister.create(Registries.POTION, Quill.MODID);
-	public static final DeferredHolder<Potion, Potion> FROGGO = REGISTRY.register("froggo", () -> new Potion("froggo", new MobEffectInstance(QuillEffects.FROGGO, 0, 0, false, true)));
+	public static final DeferredHolder<Potion, Potion> FROGGO = REGISTRY.register("froggo", () -> new Potion(new MobEffectInstance(QuillEffects.FROGGO, 0, 0, false, true)));
 }

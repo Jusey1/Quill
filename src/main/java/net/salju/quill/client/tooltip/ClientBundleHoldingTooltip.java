@@ -1,5 +1,6 @@
 package net.salju.quill.client.tooltip;
 
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientBundleTooltip;
 import net.salju.quill.item.component.BundleHoldingTooltip;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
@@ -8,7 +9,7 @@ import net.minecraft.client.gui.Font;
 
 public record ClientBundleHoldingTooltip(BundleHoldingTooltip tip) implements ClientTooltipComponent {
 	@Override
-	public int getHeight(Font f) {
+	public int getHeight() {
 		return this.backgroundHeight() + 4;
 	}
 
@@ -18,12 +19,7 @@ public record ClientBundleHoldingTooltip(BundleHoldingTooltip tip) implements Cl
 	}
 
 	@Override
-	public boolean showTooltipWithItemInHand() {
-		return true;
-	}
-
-	@Override
-	public void renderImage(Font f, int x, int y, int z, int o, GuiGraphics gui) {
+	public void renderImage(Font f, int x, int y, GuiGraphics gui) {
 		int k = 0;
 		if (!tip.getContents().isEmpty()) {
 			for (int i = 0; i < this.gridSizeY(); i++) {
