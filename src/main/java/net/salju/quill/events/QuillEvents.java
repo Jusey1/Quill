@@ -353,20 +353,20 @@ public class QuillEvents {
 				int i = 0;
 				int m = event.getLeft().is(QuillTags.DOUBENCHS) ? QuillConfig.MAXENCH.get() * 2 : QuillConfig.MAXENCH.get();
 				for (Holder<Enchantment> e : book.keySet()) {
-					int p = Math.min(map.getLevel(e) == book.getLevel(e) ? book.getLevel(e) + 1 : Math.max(book.getLevel(e), map.getLevel(e)), e.value().getMaxLevel());
+					int p = Math.min(map.getLevel(e) == book.getLevel(e) ? book.getLevel(e) + 1 : book.getLevel(e), e.value().getMaxLevel());
 					int t = 0;
 					boolean check = event.getLeft().is(Items.ENCHANTED_BOOK) ? true : event.getLeft().supportsEnchantment(e);
 					for (Holder<Enchantment> target : map.keySet()) {
 						if (!target.is(EnchantmentTags.CURSE)) {
 							t++;
 						}
-						if ((e != target && !EnchantmentHelper.isEnchantmentCompatible(map.keySet(), e)) || (e == target && book.getLevel(e) == p)) {
+						if ((e != target && !EnchantmentHelper.isEnchantmentCompatible(map.keySet(), e)) || (e == target && map.getLevel(e) >= p)) {
 							check = false;
 						}
 					}
-					boolean always = (e.is(EnchantmentTags.CURSE) || p > book.getLevel(e));
-					if (check && (always || t < m)) {
-						map.set(e, book.getLevel(e));
+					boolean doublecheck = e.is(EnchantmentTags.CURSE) || p > map.getLevel(e) ? true : t < m;
+					if (check && doublecheck) {
+						map.set(e, p);
 						int c = 4;
 						i = (i + ((p * c) / 2));
 					}
