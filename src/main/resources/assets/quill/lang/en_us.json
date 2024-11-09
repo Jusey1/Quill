@@ -15,6 +15,8 @@
   "enchantment.quill.sharpshooter.desc": "Increases the damage of arrows shot by the Crossbow",
   "enchantment.quill.spikes": "Spikes",
   "enchantment.quill.spikes.desc": "Deals damage to attackers.",
+  "enchantment.quill.torrent": "Torrent",
+  "enchantment.quill.torrent.desc": "Increases the damage dealt against fire based enemies and water sensitive mobs",
   "itemGroup.quill": "Salju\u0027s Quill",
   "item.minecraft.potion.effect.froggo": "Potion of Frog Transfigurating",
   "item.minecraft.splash_potion.effect.froggo": "Splash Potion of Frog Transfigurating",

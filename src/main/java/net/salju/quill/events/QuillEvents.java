@@ -14,13 +14,8 @@ import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 import net.neoforged.neoforge.event.entity.EntityMobGriefingEvent;
-import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
-import net.neoforged.neoforge.event.entity.living.LivingGetProjectileEvent;
-import net.neoforged.neoforge.event.entity.living.LivingShieldBlockEvent;
-import net.neoforged.neoforge.event.entity.living.MobSpawnEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.block.state.BlockState;
@@ -88,14 +83,14 @@ public class QuillEvents {
 	}
 
 	@SubscribeEvent
-	public static void onHurt(LivingDamageEvent.Pre event) {
+	public static void onHurt(LivingIncomingDamageEvent event) {
 		if (event.getSource().getDirectEntity() != null) {
 			Entity direct = event.getSource().getDirectEntity();
 			LivingEntity target = event.getEntity();
 			if (direct instanceof Projectile proj) {
 				if (proj.getPersistentData().getDouble("Sharpshooter") > 0) {
 					double x = direct.getPersistentData().getDouble("Sharpshooter");
-					event.setNewDamage((float) (Math.round(Mth.nextInt(RandomSource.create(), 7, 11)) + (2.5 * x)));
+					event.setAmount((float) (Math.round(Mth.nextInt(RandomSource.create(), 7, 11)) + (2.5 * x)));
 				}
 			} else if (direct instanceof LivingEntity && target.isUsingItem() && QuillConfig.USER.get()) {
 				if (target.getUseItem().getUseDuration(target) <= 64) {
@@ -127,7 +122,7 @@ public class QuillEvents {
 
 	@SubscribeEvent
 	public static void onBlockAttack(LivingShieldBlockEvent event) {
-		if (event.getDamageSource().getDirectEntity() != null) {
+		if (event.getDamageSource().getDirectEntity() != null && event.getBlocked()) {
 			ItemStack stack = event.getEntity().getUseItem();
 			if (event.getDamageSource().getDirectEntity() instanceof LivingEntity target) {
 				int i = QuillManager.getEnchantmentLevel(stack, target.level(), Quill.MODID, "spikes");

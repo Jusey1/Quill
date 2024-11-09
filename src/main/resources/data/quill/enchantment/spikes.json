@@ -4,11 +4,11 @@
   },
   "supported_items": "#quill:shields",
   "max_cost": {
-    "base": 50,
-    "per_level_above_first": 15
+    "base": 21,
+    "per_level_above_first": 5
   },
   "min_cost": {
-    "base": 5,
+    "base": 1,
     "per_level_above_first": 5
   },
   "slots": [
@@ -16,5 +16,5 @@
   ],
   "anvil_cost": 2,
   "max_level": 3,
-  "weight": 10
+  "weight": 5
 }
