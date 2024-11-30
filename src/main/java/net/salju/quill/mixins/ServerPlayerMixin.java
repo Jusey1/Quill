@@ -5,8 +5,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.Mixin;
 import net.salju.quill.init.QuillConfig;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.salju.quill.init.QuillTags;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
 
 @Mixin(ServerPlayer.class)
 public class ServerPlayerMixin {
@@ -15,7 +17,8 @@ public class ServerPlayerMixin {
 		if (QuillConfig.DEATH.get()) {
 			ServerPlayer ply = (ServerPlayer) (Object) this;
 			for (int i = 0; i < dead.getInventory().items.size(); i++) {
-				if (i < 9) {
+				ItemStack stack = dead.getInventory().items.get(i);
+				if (i < 9 || stack.is(QuillTags.PROTECTED)) {
 					ply.getInventory().items.set(i, dead.getInventory().items.get(i));
 				}
 			}

@@ -19,11 +19,10 @@ public abstract class ItemInHandRendererMixin {
 	private void renderSwordBlock(AbstractClientPlayer player, float ticks, float p, InteractionHand hand, float sP, ItemStack stack, float f, PoseStack pose, MultiBufferSource buffer, int i, CallbackInfo ci) {
 		if (player.isUsingItem() && stack == player.getUseItem()) {
 			if (stack.getItem() instanceof MagicMirrorItem) {
-				float r = (hand == InteractionHand.MAIN_HAND ? 21.0F : -21.0F);
-				float t = (hand == InteractionHand.MAIN_HAND ? 0.245F : -0.245F);
-				pose.translate(t, 0.025F, 0.12F);
-				pose.mulPose(Axis.XP.rotationDegrees(-1.0F));
-				pose.mulPose(Axis.YP.rotationDegrees(r));
+				boolean check = hand.equals(InteractionHand.MAIN_HAND);
+				pose.translate(check ? 0.245F : -0.245F, 0.035F, 0.14F);
+				pose.mulPose(Axis.YP.rotationDegrees(check ? 32.0F : -32.0F));
+				pose.mulPose(Axis.ZP.rotationDegrees(check ? 4.0F : -4.0F));
 			}
 		}
 	}

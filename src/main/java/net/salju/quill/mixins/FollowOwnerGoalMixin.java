@@ -14,7 +14,6 @@ import net.minecraft.world.entity.TamableAnimal;
 public abstract class FollowOwnerGoalMixin {
 	@Inject(method = "canUse", at = @At("RETURN"), cancellable = true)
 	public void canFollow(CallbackInfoReturnable<Boolean> ci) {
-		FollowOwnerGoal thys = (FollowOwnerGoal) (Object) this;
 		if (this.tamable.getType().is(QuillTags.PETS) && QuillConfig.PETS.get() && tamable.getPersistentData().getBoolean("isWandering")) {
 			ci.setReturnValue(false);
 		}

@@ -58,13 +58,13 @@ public record ClientBundleHoldingTooltip(BundleHoldingTooltip tip) implements Cl
 		if (tip.getContents().isEmpty()) {
 			return 0;
 		}
-		return Math.max(2, (int) Math.ceil(Math.sqrt((double) tip.getContents().size() + 1.0)));
+		return Math.max(2, (int) Math.ceil(Math.sqrt((double) tip.getContents().size() + 1)));
 	}
 
 	private int gridSizeY() {
 		if (tip.getContents().isEmpty()) {
 			return 0;
 		}
-		return (int) Math.ceil(((double) tip.getContents().size() + 1.0) / (double) this.gridSizeX());
+		return (int) Math.ceil((double) tip.getContents().size() / this.gridSizeX());
 	}
 }

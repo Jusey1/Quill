@@ -16,6 +16,8 @@ public class QuillTags {
 	public static final TagKey<EntityType<?>> BOOTS = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(Quill.MODID,"force_feet_armor"));
 	public static final TagKey<Item> AXES = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"axes"));
 	public static final TagKey<Item> BOWS = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"bows"));
+	public static final TagKey<Item> SHIELDS = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"shields"));
 	public static final TagKey<Item> ENCHS = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"enchantables"));
 	public static final TagKey<Item> DOUBENCHS = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"double_enchantments"));
+	public static final TagKey<Item> PROTECTED = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"protected"));
 }

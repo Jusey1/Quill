@@ -5,8 +5,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.Mixin;
 import net.salju.quill.init.QuillConfig;
-import net.minecraft.world.item.ItemStack;
+import net.salju.quill.init.QuillTags;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 
 @Mixin(Inventory.class)
 public class InventoryMixin {
@@ -17,7 +18,7 @@ public class InventoryMixin {
 			ci.cancel();
 			for (int i = 0; i < invy.items.size(); i++) {
 				ItemStack stack = invy.items.get(i);
-				if (i < 9) {
+				if (i < 9 || stack.is(QuillTags.PROTECTED)) {
 					continue;
 				}
 				if (!stack.isEmpty()) {
