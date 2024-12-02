@@ -17,7 +17,8 @@
   ],
   "client": [
      "BundleMouseActionsMixin",
-     "ItemInHandRendererMixin"
+     "ItemInHandRendererMixin",
+     "ItemRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
