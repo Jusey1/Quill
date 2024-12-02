@@ -1,27 +1,28 @@
 package net.salju.quill.item;
 
-import net.minecraft.world.InteractionResult;
 import net.salju.quill.init.QuillData;
 import net.salju.quill.item.component.*;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.stats.Stats;
+import net.minecraft.tags.EnchantmentTags;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.List;
@@ -39,6 +40,9 @@ public class BundleHoldingItem extends Item {
 
 	@Override
 	public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
+		if (stack.has(DataComponents.HIDE_TOOLTIP) || stack.has(DataComponents.HIDE_ADDITIONAL_TOOLTIP)) {
+			return Optional.empty();
+		}
 		return Optional.of(new BundleHoldingTooltip(stack.getOrDefault(QuillData.BUNDLE, BundleHoldingContents.EMPTY)));
 	}
 
@@ -90,7 +94,8 @@ public class BundleHoldingItem extends Item {
 				this.playSound(player, SoundEvents.BUNDLE_INSERT);
 				target.shrink(target.getCount());
 			} else if (target.isEmpty() && getContentWeight(stack) > 0) {
-				ItemStack newstack = removeOne(stack, 0);
+				int i = getSelectedItem(stack);
+				ItemStack newstack = removeOne(stack, i != -1 ? i : 0);
 				if (!newstack.isEmpty()) {
 					this.playSound(player, SoundEvents.BUNDLE_REMOVE_ONE);
 					add(stack, slot.safeInsert(newstack));
@@ -114,7 +119,8 @@ public class BundleHoldingItem extends Item {
 				this.playSound(player, SoundEvents.BUNDLE_INSERT);
 				target.shrink(target.getCount());
 			} else if (target.isEmpty()) {
-				ItemStack newstack = removeOne(stack, 0);
+				int i = getSelectedItem(stack);
+				ItemStack newstack = removeOne(stack, i != -1 ? i : 0);
 				if (!newstack.isEmpty()) {
 					this.playSound(player, SoundEvents.BUNDLE_REMOVE_ONE);
 					acc.set(newstack);
@@ -217,12 +223,12 @@ public class BundleHoldingItem extends Item {
 		return stack.getOrDefault(QuillData.BUNDLE, BundleHoldingContents.EMPTY).getItems();
 	}
 
-	public Iterable<ItemStack> getContentsIterable(ItemStack stack) {
-		return stack.getOrDefault(QuillData.BUNDLE, BundleHoldingContents.EMPTY).getItemsAsCopyIterable();
-	}
-
 	public int getContentWeight(ItemStack stack) {
 		return stack.getOrDefault(QuillData.BUNDLE, BundleHoldingContents.EMPTY).getWeight();
+	}
+
+	public int getSelectedItem(ItemStack stack) {
+		return stack.getOrDefault(QuillData.BUNDLE, BundleHoldingContents.EMPTY).getSelectedItem();
 	}
 
 	public void playSound(Entity target, SoundEvent sound) {

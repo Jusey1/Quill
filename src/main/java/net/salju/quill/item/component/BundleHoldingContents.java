@@ -1,20 +1,25 @@
 package net.salju.quill.item.component;
 
-import com.mojang.serialization.Codec;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import com.google.common.collect.Lists;
+import com.mojang.serialization.Codec;
 import java.util.List;
 
-public record BundleHoldingContents(List<ItemStack> items) {
+public record BundleHoldingContents(List<ItemStack> items, int target) {
 	public static final BundleHoldingContents EMPTY = new BundleHoldingContents(List.of());
 	public static final Codec<BundleHoldingContents> CODEC = ItemStack.CODEC.listOf().xmap(BundleHoldingContents::new, b -> b.items);
 	public static final StreamCodec<RegistryFriendlyByteBuf, BundleHoldingContents> STREAM_CODEC = ItemStack.STREAM_CODEC.apply(ByteBufCodecs.list()).map(BundleHoldingContents::new, b -> b.items);
 
 	public BundleHoldingContents(List<ItemStack> items) {
+		this(items, -1);
+	}
+
+	public BundleHoldingContents(List<ItemStack> items, int target) {
 		this.items = items;
+		this.target = target;
 	}
 
 	@Override
@@ -22,8 +27,8 @@ public record BundleHoldingContents(List<ItemStack> items) {
 		return "BundleHoldingContents" + this.getItems();
 	}
 
-	public ItemStack getSpecificItem(int index) {
-		return this.getItems().get(index);
+	public ItemStack getSpecificItem(int i) {
+		return this.getItems().get(i);
 	}
 
 	public Iterable<ItemStack> getItemsAsCopyIterable() {
@@ -50,5 +55,9 @@ public record BundleHoldingContents(List<ItemStack> items) {
 			}
 		}
 		return b;
+	}
+
+	public int getSelectedItem() {
+		return this.target;
 	}
 }

@@ -10,5 +10,6 @@ public class NetworkSetup {
 	@SubscribeEvent
 	public static void registerMessage(FMLCommonSetupEvent event) {
 		Quill.addNetworkMessage(Fireworks.CREEPER_FIREWORKS, Fireworks.STREAM_CODEC, Fireworks::handleData);
+		Quill.addNetworkMessage(BundleUpdate.BUNDLE_UPDATE, BundleUpdate.STREAM_CODEC, BundleUpdate::handleData);
 	}
 }
