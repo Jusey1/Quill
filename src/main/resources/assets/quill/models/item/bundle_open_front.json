@@ -1,0 +1,6 @@
+{
+  "parent": "quill:item/bundle",
+  "textures": {
+    "layer0": "quill:item/bundle_open_front"
+  }
+}
