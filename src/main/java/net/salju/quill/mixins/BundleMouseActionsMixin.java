@@ -33,13 +33,6 @@ public abstract class BundleMouseActionsMixin {
 	@Shadow
 	private ScrollWheelHandler scrollWheelHandler;
 
-	@Inject(method = "matches", at = @At(value = "RETURN"), cancellable = true)
-	private void matches(Slot target, CallbackInfoReturnable<Boolean> ci) {
-		if (target.getItem().is(QuillItems.BUNDLE)) {
-			ci.setReturnValue(true);
-		}
-	}
-
 	@Inject(method = "onMouseScrolled", at = @At(value = "HEAD"), cancellable = true)
 	private void mouse(double up, double down, int s, ItemStack stack, CallbackInfoReturnable<Boolean> ci) {
 		if (stack.getItem() instanceof BundleHoldingItem target) {
