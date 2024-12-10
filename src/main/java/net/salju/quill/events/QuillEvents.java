@@ -16,12 +16,10 @@ import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 import net.neoforged.neoforge.event.entity.EntityMobGriefingEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.entity.living.*;
-import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.BlockDropsEvent;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.CropBlock;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.*;
@@ -36,7 +34,6 @@ import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.npc.Villager;
-import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -66,7 +63,7 @@ public class QuillEvents {
 		if (!player.getItemBySlot(EquipmentSlot.CHEST).isEmpty() && player.getItemBySlot(EquipmentSlot.CHEST).isEnchanted()) {
 			int i = QuillManager.getEnchantmentLevel(player.getItemBySlot(EquipmentSlot.CHEST), player.level(), Quill.MODID, "magnetic");
 			if (i > 0) {
-				for (ItemEntity item : player.level().getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(8.0 * i))) {
+				for (ItemEntity item : player.level().getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(QuillConfig.MAGRANGE.get() * i))) {
 					if (item.isAlive() && player.isCrouching() && QuillManager.isValidMagneticItem(player, item.getItem())) {
 						item.setNoGravity(true);
 						Vec3 v = player.getEyePosition().subtract(item.position());
@@ -90,7 +87,7 @@ public class QuillEvents {
 			if (direct instanceof Projectile proj) {
 				if (proj.getPersistentData().getDouble("Sharpshooter") > 0) {
 					double x = direct.getPersistentData().getDouble("Sharpshooter");
-					event.setAmount((float) (Math.round(Mth.nextInt(RandomSource.create(), 7, 11)) + (2.5 * x)));
+					event.setAmount((float) (Math.round(Mth.nextInt(target.getRandom(), 7, 11)) + (2.5 * x)));
 				}
 			} else if (direct instanceof LivingEntity && target.isUsingItem() && QuillConfig.USER.get()) {
 				if (target.getUseItem().getUseDuration(target) <= 64) {
@@ -104,7 +101,7 @@ public class QuillEvents {
 	}
 
 	@SubscribeEvent
-	public static void onDeath(LivingDeathEvent event) {
+	public static void onDeathDrops(LivingDropsEvent event) {
 		if (event.getEntity().getType() == EntityType.MAGMA_CUBE && event.getSource().getEntity() instanceof Frog frog) {
 			if (frog.getVariant() == QuillFrogs.WITCH && event.getEntity().level() instanceof ServerLevel lvl) {
 				event.getEntity().spawnAtLocation(lvl, new ItemStack(QuillItems.AZURE.get()));
@@ -127,37 +124,16 @@ public class QuillEvents {
 			if (event.getDamageSource().getDirectEntity() instanceof LivingEntity target) {
 				int i = QuillManager.getEnchantmentLevel(stack, target.level(), Quill.MODID, "spikes");
 				int e = QuillManager.getEnchantmentLevel(stack, target.level(), Quill.MODID, "blazing");
-				int u = QuillManager.getEnchantmentLevel(stack, target.level(), Quill.MODID, "curse_of_zombie");
 				if (i > 0) {
 					if (event.getEntity() instanceof Player player) {
-						float fd = (target instanceof Phantom ? (float) (i * 2.5F) : (float) i);
+						float fd = (target instanceof Phantom ? i * 2.5F : (float) i);
 						target.hurt(player.damageSources().thorns(player), fd);
 						if (player.level() instanceof ServerLevel lvl && fd > 2.0F) {
 							lvl.sendParticles(ParticleTypes.DAMAGE_INDICATOR, target.getX(), target.getY(0.5), target.getZ(), (int) (fd * 0.5F), 0.15, 0.0, 0.15, 0.25);
 						}
 					} else {
-						float fd = (target instanceof Phantom ? (float) (i * 2.5F) : (float) i);
+						float fd = (target instanceof Phantom ? i * 2.5F : (float) i);
 						target.hurt(event.getEntity().damageSources().thorns(event.getEntity()), fd);
-					}
-				}
-				if (u > 0) {
-					if (target.level() instanceof ServerLevel lvl) {
-						lvl.playSound(null, target.blockPosition(), SoundEvents.BELL_BLOCK, SoundSource.PLAYERS, 1.25F, Mth.nextFloat(lvl.getRandom(), 0.12F, 0.21F));
-						lvl.playSound(null, target.blockPosition(), SoundEvents.BELL_RESONATE, SoundSource.PLAYERS, 1.25F, Mth.nextFloat(lvl.getRandom(), 0.12F, 0.21F));
-					}
-					event.getEntity().stopUsingItem();
-					if (event.getEntity() instanceof Player player) {
-						player.getCooldowns().addCooldown(stack, 600);
-					}
-					for (Zombie billy : event.getEntity().level().getEntitiesOfClass(Zombie.class, event.getEntity().getBoundingBox().inflate(64.0D))) {
-						if (billy.level() instanceof ServerLevel lvl) {
-							lvl.sendParticles(ParticleTypes.SOUL_FIRE_FLAME, billy.getX(), billy.getY() + 1.05, billy.getZ(), 12, 0.45, 0.25, 0.45, 0);
-						}
-						if (target.isAlive() && !(target instanceof Zombie) && Math.random() >= 0.95) {
-							billy.setTarget(target);
-						} else {
-							billy.setTarget(event.getEntity());
-						}
 					}
 				}
 				if (e > 0 && !target.fireImmune()) {
@@ -182,7 +158,7 @@ public class QuillEvents {
 
 	@SubscribeEvent
 	public static void onMobSpawned(MobSpawnEvent.PositionCheck event) {
-		if (QuillConfig.CAMPFIRE.get() && event.getEntity() instanceof Enemy && event.getSpawnType() == EntitySpawnReason.NATURAL && QuillManager.getCampfire(event.getLevel(), event.getEntity().blockPosition(), 64)) {
+		if (QuillConfig.CAMPFIRE.get() && event.getEntity() instanceof Enemy && event.getSpawnType() == EntitySpawnReason.NATURAL && QuillManager.getCampfire(event.getLevel(), event.getEntity().blockPosition(), QuillConfig.CAMPRANGE.get())) {
 			event.setResult(MobSpawnEvent.PositionCheck.Result.FAIL);
 		}
 	}
@@ -245,7 +221,7 @@ public class QuillEvents {
 		ItemStack stack = event.getItemStack();
 		BlockPos pos = event.getPos();
 		BlockState state = world.getBlockState(pos);
-		if (state.is(BlockTags.CLIMBABLE) && state.getBlock().asItem() == stack.getItem()) {
+		if (state.is(BlockTags.CLIMBABLE) && stack.is(state.getBlock().asItem())) {
 			if (world.isEmptyBlock(pos.below())) {
 				world.setBlock(pos.below(), state, 3);
 				world.playSound(player, pos.below(), state.getSoundType(world, pos.below(), player).getPlaceSound(), SoundSource.BLOCKS);
@@ -262,18 +238,17 @@ public class QuillEvents {
 				}
 			}
 		} else if (stack.getItem() instanceof HoeItem && QuillConfig.FARMER.get()) {
-			Block target = state.getBlock();
-			if (target instanceof CropBlock crops && crops.isMaxAge(state)) {
+			if (state.getBlock() instanceof CropBlock crops && crops.isMaxAge(state)) {
 				player.swing(event.getHand());
 				if (world instanceof ServerLevel lvl) {
 					lvl.playSound(null, pos, SoundEvents.CROP_BREAK, SoundSource.BLOCKS, 1.0F, (float) (0.8F + (Math.random() * 0.2)));
 					stack.hurtAndBreak(1, player, stack.getEquipmentSlot());
-					List<ItemStack> drops = target.getDrops(state, lvl, pos, null, player, stack);
+					List<ItemStack> drops = crops.getDrops(state, lvl, pos, null, player, stack);
 					ItemStack base = crops.getCloneItemStack(lvl, pos, state);
 					lvl.setBlock(pos, crops.getStateForAge(0), 2);
-					double x = (pos.getX() + 0.5);
-					double y = (pos.getY() + 0.5);
-					double z = (pos.getZ() + 0.5);
+					double x = pos.getX() + 0.5;
+					double y = pos.getY() + 0.5;
+					double z = pos.getZ() + 0.5;
 					int f = QuillManager.getEnchantmentLevel(stack, player.level(), "minecraft", "fortune");
 					for (ItemStack item : drops) {
 						if (item.is(Tags.Items.CROPS)) {
@@ -302,17 +277,12 @@ public class QuillEvents {
 	@SubscribeEvent
 	public static void onAttributes(ItemAttributeModifierEvent event) {
 		if (QuillConfig.WEAPONS.get()) {
-			if (event.getItemStack().is(Items.MACE) || event.getItemStack().is(Items.TRIDENT)) {
+			if (event.getItemStack().is(QuillTags.SPECIALS)) {
 				event.replaceModifier(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_ID, -2.8F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+				event.replaceModifier(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, 7.0F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
 			} else if (event.getItemStack().is(QuillTags.AXES)) {
 				event.replaceModifier(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_ID, -3.0F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
-				if (event.getItemStack().is(Items.IRON_AXE)) {
-					event.replaceModifier(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, 7.0F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
-				} else if (event.getItemStack().is(Items.STONE_AXE)) {
-					event.replaceModifier(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, 6.0F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
-				} else if (event.getItemStack().is(Items.WOODEN_AXE) || event.getItemStack().is(Items.GOLDEN_AXE)) {
-					event.replaceModifier(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, 5.0F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
-				}
+				event.replaceModifier(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, 5.0F + QuillManager.getBonusDamage(event.getItemStack()), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
 			}
 		}
 	}
@@ -397,31 +367,32 @@ public class QuillEvents {
 	}
 
 	@SubscribeEvent
-	public static void onBlockBreak(BlockEvent.BreakEvent event) {
-		Player player = event.getPlayer();
-		ItemStack stack = player.getMainHandItem();
-		BlockPos pos = event.getPos();
-		BlockState state = event.getState();
-		LevelAccessor world = event.getLevel();
-		double x = (pos.getX() + 0.5);
-		double y = (pos.getY() + 0.5);
-		double z = (pos.getZ() + 0.5);
-		int i = QuillManager.getEnchantmentLevel(stack, player.level(), Quill.MODID, "auto_smelt");
-		if (state.is(Tags.Blocks.ORES) && world instanceof ServerLevel lvl && i > 0) {
-			Block target = state.getBlock();
-			List<ItemStack> drops = target.getDrops(state, lvl, pos, null, player, stack);
-			for (ItemStack item : drops) {
-				Optional<RecipeHolder<SmeltingRecipe>> recipe = lvl.getServer().getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(item), lvl);
-				if (recipe.isPresent()) {
-					ItemStack smelt = recipe.get().value().assemble(new SingleRecipeInput(item), lvl.registryAccess());
-					smelt.setCount(item.getCount());
-					lvl.addFreshEntity(new ItemEntity(lvl, x, y, z, smelt));
-					if (!event.isCanceled()) {
-						world.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
-						stack.hurtAndBreak(1, player, stack.getEquipmentSlot());
-						lvl.sendParticles(ParticleTypes.FLAME, x, y, z, 4, 0.35, 0.35, 0.35, 0);
-						lvl.addFreshEntity(new ExperienceOrb(lvl, x, y, z, 2));
-						event.setCanceled(true);
+	public static void onBlockAttack(PlayerInteractEvent.LeftClickBlock event) {
+		if (QuillConfig.WEAPONS.get() && event.getEntity().isCreative() && event.getItemStack().is(QuillTags.AXES)) {
+			event.setCanceled(true);
+		}
+	}
+
+	@SubscribeEvent
+	public static void onBlockDrops(BlockDropsEvent event) {
+		if (event.getBreaker() instanceof Player player && !event.getTool().isEmpty() && event.getLevel() instanceof ServerLevel lvl) {
+			ItemStack stack = event.getTool();
+			double x = event.getPos().getX() + 0.5;
+			double y = event.getPos().getY() + 0.5;
+			double z = event.getPos().getZ() + 0.5;
+			int i = QuillManager.getEnchantmentLevel(stack, player.level(), Quill.MODID, "auto_smelt");
+			if (event.getState().is(QuillTags.SMELT) && !player.isCreative() && i > 0) {
+				for (ItemEntity ore : event.getDrops()) {
+					Optional<RecipeHolder<SmeltingRecipe>> recipe = lvl.getServer().getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(ore.getItem()), lvl);
+					if (recipe.isPresent()) {
+						ItemStack smelt = recipe.get().value().assemble(new SingleRecipeInput(ore.getItem()), lvl.registryAccess());
+						smelt.setCount(ore.getItem().getCount());
+						lvl.addFreshEntity(new ItemEntity(lvl, x, y, z, smelt));
+						if (!event.isCanceled()) {
+							lvl.sendParticles(ParticleTypes.FLAME, x, y, z, 4, 0.35, 0.35, 0.35, 0);
+							lvl.addFreshEntity(new ExperienceOrb(lvl, x, y, z, 2));
+							event.setCanceled(true);
+						}
 					}
 				}
 			}

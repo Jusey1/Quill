@@ -1,5 +1,6 @@
 package net.salju.quill.events;
 
+import net.salju.quill.init.QuillTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Repairable;
 import net.minecraft.world.level.Level;
@@ -20,6 +21,19 @@ import net.minecraft.core.BlockPos;
 public class QuillManager {
 	public static int getEnchantmentLevel(ItemStack stack, Level world, String id, String name) {
 		return stack.getEnchantmentLevel(world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(ResourceKey.create(Registries.ENCHANTMENT, ResourceLocation.fromNamespaceAndPath(id, name))));
+	}
+
+	public static float getBonusDamage(ItemStack stack) {
+		if (stack.is(QuillTags.NETHER)) {
+			return 4.0F;
+		} else if (stack.is(QuillTags.DIAMOND)) {
+			return 3.0F;
+		} else if (stack.is(QuillTags.IRON)) {
+			return 2.0F;
+		} else if (stack.is(QuillTags.STONE)) {
+			return 1.0F;
+		}
+		return 0.0F;
 	}
 
 	public static boolean isValidRepairItem(ItemStack stack, ItemStack material) {
@@ -60,7 +74,7 @@ public class QuillManager {
 				if (chunk != null) {
 					for (BlockPos target : chunk.getBlockEntitiesPos()) {
 						BlockState state = chunk.getBlockState(target);
-						if (state.getBlock() == Blocks.CAMPFIRE || state.getBlock() == Blocks.SOUL_CAMPFIRE) {
+						if (state.is(Blocks.CAMPFIRE) || state.is(Blocks.SOUL_CAMPFIRE)) {
 							if (state.getValue(CampfireBlock.LIT)) {
 								if (pos.closerThan(target, radius)) {
 									check = true;

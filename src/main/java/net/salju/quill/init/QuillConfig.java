@@ -22,6 +22,7 @@ public class QuillConfig {
 	public static final ModConfigSpec.BooleanValue TAXI;
 	public static final ModConfigSpec.BooleanValue KICK;
 	public static final ModConfigSpec.BooleanValue CAMPFIRE;
+	public static final ModConfigSpec.IntValue CAMPRANGE;
 
 	public static final ModConfigSpec.BooleanValue ENCHS;
 	public static final ModConfigSpec.IntValue MAXENCH;
@@ -31,6 +32,7 @@ public class QuillConfig {
 	public static final ModConfigSpec.IntValue MAXANBOOKCOST;
 	public static final ModConfigSpec.BooleanValue RENAME;
 	public static final ModConfigSpec.BooleanValue GRIND;
+	public static final ModConfigSpec.IntValue MAGRANGE;
 	
 	static {
 		BUILDER.push("Block & Item Configuration");
@@ -50,6 +52,7 @@ public class QuillConfig {
 		TAXI = BUILDER.comment("Should villagers join a player's camel or boat by simply being nearby?").define("Taxi Camel", true);
 		KICK = BUILDER.comment("Should the player be able to crouch right-click entities off of what they are riding?").define("Kick Them Off", true);
 		CAMPFIRE = BUILDER.comment("Should campfires disable enemy spawning if lit?").define("Campfire Protection", true);
+		CAMPRANGE = BUILDER.comment("Campfire's range for disabling enemy spawning.").defineInRange("Campfire Range", 64, 0, Integer.MAX_VALUE);
 		BUILDER.pop();
 		BUILDER.push("Enchantment Configuration");
 		ENCHS = BUILDER.comment("Should this mod's enchantment rework be in effect?").define("Enchantments Rework", true);
@@ -60,6 +63,7 @@ public class QuillConfig {
 		MAXANBOOKCOST = BUILDER.comment("Maximum cost on an anvil when combining?").defineInRange("Max Anvil Cost", 15, 0, 45);
 		RENAME = BUILDER.comment("Should renaming always only cost 1 level?").define("Better Anvil Renaming", true);
 		GRIND = BUILDER.comment("Should the grindstone be usable to disenchant items onto an enchanted book?").define("Grindstone Disenchant", true);
+		MAGRANGE = BUILDER.comment("Magnetic Enchantment's range for pulling items per level of the enchantment.").defineInRange("Magnetic Range", 6, 0, Integer.MAX_VALUE);
 		BUILDER.pop();
 		CONFIG = BUILDER.build();
 	}
