@@ -27,27 +27,23 @@ public abstract class ItemRendererMixin {
 	@Shadow
 	private ItemModelShaper itemModelShaper;
 
-	@Inject(method = "renderBundleItem", at = @At(value = "HEAD"))
-	private void renderBundle(ItemStack stack, ItemDisplayContext context, boolean check, PoseStack pose, MultiBufferSource buffer, int c, int e, BakedModel model, Level world, LivingEntity owner, int i, CallbackInfo ci) {
+	@Inject(method = "render", at = @At(value = "HEAD"), cancellable = true)
+	private void renderBundle(ItemStack stack, ItemDisplayContext context, boolean check, PoseStack pose, MultiBufferSource buffer, int c, int e, BakedModel model, CallbackInfo ci) {
 		if (stack.getItem() instanceof BundleHoldingItem target) {
 			if (target.getSelectedItem(stack) != -1) {
-				this.renderItemModelRaw(stack, context, check, pose, buffer, c, e, this.resolveModelOverride(this.itemModelShaper.getItemModel(ResourceLocation.fromNamespaceAndPath(Quill.MODID, "bundle_open_back")), stack, world, owner, i), this.quill$shouldRenderItemFlat(context), -1.5F);
-				this.renderSimpleItemModel(target.getContents(stack).get(target.getSelectedItem(stack)), context, check, pose, buffer, c, e, this.getModel(target.getContents(stack).get(target.getSelectedItem(stack)), world, owner, i), this.quill$shouldRenderItemFlat(context));
-				this.renderItemModelRaw(stack, context, check, pose, buffer, c, e, this.resolveModelOverride(this.itemModelShaper.getItemModel(ResourceLocation.fromNamespaceAndPath(Quill.MODID, "bundle_open_front")), stack, world, owner, i), this.quill$shouldRenderItemFlat(context), 0.5F);
-			} else {
-				this.render(stack, context,check, pose, buffer, c, e, model);
+				this.renderItemModelRaw(stack, context, check, pose, buffer, c, e, this.resolveModelOverride(this.itemModelShaper.getItemModel(ResourceLocation.fromNamespaceAndPath(Quill.MODID, "bundle_open_back")), stack, null, null, 0), this.quill$shouldRenderItemFlat(context), -1.5F);
+				this.renderSimpleItemModel(target.getContents(stack).get(target.getSelectedItem(stack)), context, check, pose, buffer, c, e, this.getModel(target.getContents(stack).get(target.getSelectedItem(stack)), null, null, 0), this.quill$shouldRenderItemFlat(context));
+				this.renderItemModelRaw(stack, context, check, pose, buffer, c, e, this.resolveModelOverride(this.itemModelShaper.getItemModel(ResourceLocation.fromNamespaceAndPath(Quill.MODID, "bundle_open_front")), stack, null, null, 0), this.quill$shouldRenderItemFlat(context), 0.5F);
+				ci.cancel();
 			}
 		}
 	}
 
 	@Shadow
-    public abstract void render(ItemStack stack, ItemDisplayContext context, boolean check, PoseStack pose, MultiBufferSource buffer, int c, int e, BakedModel model);
-
-	@Shadow
 	protected abstract void renderSimpleItemModel(ItemStack stack, ItemDisplayContext context, boolean check, PoseStack pose, MultiBufferSource buffer, int c, int e, BakedModel model, boolean bool);
 
 	@Shadow
-    protected abstract void renderItemModelRaw(ItemStack stack, ItemDisplayContext context, boolean check, PoseStack pose, MultiBufferSource buffer, int c, int e, BakedModel model, boolean bool, float f);
+	protected abstract void renderItemModelRaw(ItemStack stack, ItemDisplayContext context, boolean check, PoseStack pose, MultiBufferSource buffer, int c, int e, BakedModel model, boolean bool, float f);
 
 	@Shadow
 	protected abstract BakedModel resolveModelOverride(BakedModel model, ItemStack stack, Level world, LivingEntity owner, int i);
