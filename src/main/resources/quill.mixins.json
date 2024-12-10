@@ -16,8 +16,6 @@
      "InventoryMixin"
   ],
   "client": [
-     "BundleMouseActionsMixin",
-     "ItemInHandRendererMixin",
      "ItemRendererMixin"
   ],
   "injectors": {
