@@ -1,0 +1,20 @@
+{
+  "description": {
+    "translate": "enchantment.quill.spikes"
+  },
+  "supported_items": "#quill:shields",
+  "max_cost": {
+    "base": 21,
+    "per_level_above_first": 5
+  },
+  "min_cost": {
+    "base": 1,
+    "per_level_above_first": 5
+  },
+  "slots": [
+    "offhand"
+  ],
+  "anvil_cost": 2,
+  "max_level": 3,
+  "weight": 5
+}

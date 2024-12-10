@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:efficiency",
+    "quill:torrent"
+  ],
+  "remove": [
+    "minecraft:breach"
+  ]
+}
