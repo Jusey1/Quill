@@ -1,9 +1,5 @@
 {
   "replace": false,
   "values": [
-    {
-      "id": "alexscaves:vallumraptor",
-      "required": false
-    }
   ]
 }

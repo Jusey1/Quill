@@ -4,7 +4,7 @@ license="MIT License"
 
 [[mods]]
 modId="quill"
-version="2.1.14"
+version="2.1.15"
 displayName="Salju's Quill"
 displayURL="https://discord.gg/s7QaYGUzZU"
 logoFile="logo.png"
