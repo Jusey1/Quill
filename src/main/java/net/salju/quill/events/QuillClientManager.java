@@ -1,31 +1,16 @@
 package net.salju.quill.events;
 
-import net.salju.quill.init.QuillData;
-import net.salju.quill.item.BundleHoldingItem;
-import net.salju.quill.item.component.BundleHoldingContents;
-import net.salju.quill.network.BundleUpdate;
-import net.neoforged.neoforge.network.PacketDistributor;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Mth;
 import net.minecraft.client.particle.FireworkParticles;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.FireworkExplosion;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import com.google.common.collect.Lists;
 import java.util.List;
 
 public class QuillClientManager {
-	public static void bundleUpdate(ItemStack stack, int s, int i) {
-		if (stack.getItem() instanceof BundleHoldingItem target) {
-			if (Minecraft.getInstance().getConnection() != null && i < target.getContents(stack).size()) {
-				stack.set(QuillData.BUNDLE, new BundleHoldingContents(target.getContents(stack), i));
-				PacketDistributor.sendToServer(new BundleUpdate(s, i));
-			}
-		}
-	}
-
 	public static void creeperFireworks(ClientLevel lvl, double x, double y, double z) {
 		Minecraft.getInstance().particleEngine.add(new FireworkParticles.Starter(lvl, x + 0.5, y + 0.5, z + 0.5, 0, 0, 0, Minecraft.getInstance().particleEngine, getPride()));
 	}

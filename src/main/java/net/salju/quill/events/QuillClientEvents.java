@@ -1,5 +1,6 @@
 package net.salju.quill.events;
 
+import net.salju.quill.init.QuillData;
 import net.salju.quill.item.BundleHoldingItem;
 import net.salju.quill.item.MagicMirrorItem;
 import net.neoforged.api.distmarker.Dist;
@@ -15,6 +16,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.InteractionHand;
 import com.mojang.math.Axis;
+import net.salju.quill.item.component.BundleHoldingContents;
 import org.joml.Vector2i;
 
 @EventBusSubscriber(value = Dist.CLIENT)
@@ -44,7 +46,7 @@ public class QuillClientEvents {
 						int c = target.getSelectedItem(stack);
 						int e = ScrollWheelHandler.getNextScrollWheelSelection(w, c, target.getContents(stack).size());
 						if (c != e) {
-							QuillClientManager.bundleUpdate(stack, screen.getSlotUnderMouse().index, e);
+							stack.set(QuillData.BUNDLE, new BundleHoldingContents(target.getContents(stack), e));
 						}
 					}
 				}
@@ -59,7 +61,7 @@ public class QuillClientEvents {
 				ItemStack stack = slot.getItem();
 				if (slot.hasItem() && slot != screen.getSlotUnderMouse() && stack.getItem() instanceof BundleHoldingItem target) {
 					if (target.getSelectedItem(stack) != -1) {
-						QuillClientManager.bundleUpdate(stack, slot.index, -1);
+						stack.set(QuillData.BUNDLE, new BundleHoldingContents(target.getContents(stack), -1));
 					}
 				}
 			}
