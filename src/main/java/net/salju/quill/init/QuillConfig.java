@@ -16,7 +16,6 @@ public class QuillConfig {
 	public static final ModConfigSpec.BooleanValue DEATH;
 	public static final ModConfigSpec.BooleanValue CREEPER;
 	public static final ModConfigSpec.BooleanValue FROGGO;
-	public static final ModConfigSpec.BooleanValue PETS;
 	public static final ModConfigSpec.BooleanValue PEACEFUL;
 	public static final ModConfigSpec.BooleanValue NO;
 	public static final ModConfigSpec.BooleanValue TAXI;
@@ -46,7 +45,6 @@ public class QuillConfig {
 		DEATH = BUILDER.comment("Should hotbar & equipment be kept on death?").define("Death Protection", true);
 		CREEPER = BUILDER.comment("Should creepers be prideful?").define("Prideful Creepers", true);
 		FROGGO = BUILDER.comment("Should witches turn Nitwits into frogs?").define("Frog Transfiguration", true);
-		PETS = BUILDER.comment("Should tagged pets be allowed to set to wander?").define("Wandering Pets", true);
 		PEACEFUL = BUILDER.comment("Should tagged mobs be peaceful by default unless provoked?").define("Peaceful Mobs", false);
 		NO = BUILDER.comment("Should tagged mobs be unallowed to grief blocks?").define("Stop That", false);
 		TAXI = BUILDER.comment("Should villagers join a player's camel or boat by simply being nearby?").define("Taxi Camel", true);

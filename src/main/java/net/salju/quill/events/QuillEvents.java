@@ -200,16 +200,6 @@ public class QuillEvents {
 			if (target.isPassenger() && QuillConfig.KICK.get()) {
 				player.swing(InteractionHand.MAIN_HAND, true);
 				target.stopRiding();
-			} else if (target.getType().is(QuillTags.PETS) && QuillConfig.PETS.get() && target instanceof TamableAnimal animal) {
-				if (animal.isOwnedBy(player)) {
-					if (animal.getPersistentData().getBoolean("isWandering")) {
-						animal.getPersistentData().remove("isWandering");
-						player.swing(InteractionHand.MAIN_HAND, true);
-						event.setCanceled(true);
-					} else if (animal.isOrderedToSit()) {
-						animal.getPersistentData().putBoolean("isWandering", true);
-					}
-				}
 			}
 		}
 	}
