@@ -6,7 +6,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.Mixin;
 import net.salju.quill.init.QuillTags;
 import net.salju.quill.init.QuillConfig;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.ArmorItem;
@@ -25,7 +24,7 @@ public abstract class EnchantmentHelperMixin {
 			if (target instanceof Animal animal) {
 				ItemStack stack = animal.getBodyArmorItem();
 				if (!stack.isEmpty() && stack.isEnchanted() && stack.getItem() instanceof ArmorItem armor) {
-					EnchantmentHelper.runIterationOnItem(stack, animal.getType().is(QuillTags.BOOTS) ? EquipmentSlot.FEET : armor.getEquipmentSlot(stack), target, v);
+					EnchantmentHelper.runIterationOnItem(stack, armor.getEquipmentSlot(stack), target, v);
 				}
 			}
 		}

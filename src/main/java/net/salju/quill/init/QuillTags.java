@@ -14,7 +14,6 @@ public class QuillTags {
 	public static final TagKey<EntityType<?>> PEACEFUL = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(Quill.MODID, "peaceful"));
 	public static final TagKey<EntityType<?>> NO = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(Quill.MODID,"no"));
 	public static final TagKey<EntityType<?>> DOUBLE = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(Quill.MODID,"double_riders"));
-	public static final TagKey<EntityType<?>> BOOTS = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(Quill.MODID,"force_feet_armor"));
 	public static final TagKey<Block> SMELT = BlockTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"autosmelt"));
 	public static final TagKey<Item> AXES = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"axes"));
 	public static final TagKey<Item> BOWS = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"bows"));
