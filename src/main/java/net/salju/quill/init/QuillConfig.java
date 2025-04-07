@@ -24,7 +24,6 @@ public class QuillConfig {
 	public static final ModConfigSpec.IntValue CAMPRANGE;
 
 	public static final ModConfigSpec.BooleanValue ENCHS;
-	public static final ModConfigSpec.IntValue MAXENCH;
 	public static final ModConfigSpec.BooleanValue UNBREAKING;
 	public static final ModConfigSpec.BooleanValue REPAIR;
 	public static final ModConfigSpec.BooleanValue ANBOOK;
@@ -54,7 +53,6 @@ public class QuillConfig {
 		BUILDER.pop();
 		BUILDER.push("Enchantment Configuration");
 		ENCHS = BUILDER.comment("Should this mod's enchantment rework be in effect?").define("Enchantments Rework", true);
-		MAXENCH = BUILDER.comment("How many enchantments should be applicable to an item?").defineInRange("Max Enchantments", 3, 0, 25);
 		UNBREAKING = BUILDER.comment("Should enchanted equipment be unbreakable?").define("Unbreaking Protection", true);
 		REPAIR = BUILDER.comment("Should repairing equipment be better & only costing 1 level?").define("Better Anvil Repair", true);
 		ANBOOK = BUILDER.comment("Should this mod adjust combining enchanted items on an anvil?").define("Better Anvil Enchanting", true);

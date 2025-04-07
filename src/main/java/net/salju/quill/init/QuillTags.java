@@ -24,6 +24,5 @@ public class QuillTags {
 	public static final TagKey<Item> IRON = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"iron_axe_tier"));
 	public static final TagKey<Item> STONE = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"stone_axe_tier"));
 	public static final TagKey<Item> ENCHS = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"enchantables"));
-	public static final TagKey<Item> DOUBENCHS = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"double_enchantments"));
 	public static final TagKey<Item> PROTECTED = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"protected"));
 }
