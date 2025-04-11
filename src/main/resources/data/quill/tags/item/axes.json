@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "#quill:netherite_axe_tier",
+    "#quill:diamond_axe_tier",
+    "#quill:iron_axe_tier",
+    "#quill:stone_axe_tier",
+    "minecraft:wooden_axe",
+    "minecraft:golden_axe"
+  ]
+}
