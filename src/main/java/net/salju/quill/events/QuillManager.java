@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.component.DataComponents;
@@ -34,6 +35,19 @@ public class QuillManager {
 			return 1.0F;
 		}
 		return 0.0F;
+	}
+
+	public static int getMaxRiders(EntityType<?> type) {
+		if (type.is(QuillTags.DOUBLE)) {
+			return 2;
+		} else if (type.is(QuillTags.TRIPLE)) {
+			return 3;
+		} else if (type.is(QuillTags.QUAD)) {
+			return 4;
+		} else if (type.is(QuillTags.PENTA)) {
+			return 5;
+		}
+		return 0;
 	}
 
 	public static boolean isValidRepairItem(ItemStack stack, ItemStack material) {

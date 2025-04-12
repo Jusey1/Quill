@@ -47,7 +47,6 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -103,7 +102,7 @@ public class QuillEvents {
 
 	@SubscribeEvent
 	public static void onDeathDrops(LivingDropsEvent event) {
-		if (event.getEntity().getType() == EntityType.MAGMA_CUBE && event.getSource().getEntity() instanceof Frog frog) {
+		if (event.getEntity().getType().equals(EntityType.MAGMA_CUBE) && event.getSource().getEntity() instanceof Frog frog) {
 			if (frog.getVariant().is(ResourceLocation.fromNamespaceAndPath(Quill.MODID, "witch")) && event.getEntity().level() instanceof ServerLevel lvl) {
 				event.getEntity().spawnAtLocation(lvl, new ItemStack(QuillItems.AZURE.get()));
 			}
@@ -159,19 +158,20 @@ public class QuillEvents {
 
 	@SubscribeEvent
 	public static void onMobSpawned(MobSpawnEvent.PositionCheck event) {
-		if (QuillConfig.CAMPFIRE.get() && event.getEntity() instanceof Enemy && event.getSpawnType() == EntitySpawnReason.NATURAL && QuillManager.getCampfire(event.getLevel(), event.getEntity().blockPosition(), QuillConfig.CAMPRANGE.get())) {
+		if (QuillConfig.CAMPFIRE.get() && event.getEntity() instanceof Enemy && event.getSpawnType().equals(EntitySpawnReason.NATURAL) && QuillManager.getCampfire(event.getLevel(), event.getEntity().blockPosition(), QuillConfig.CAMPRANGE.get())) {
 			event.setResult(MobSpawnEvent.PositionCheck.Result.FAIL);
 		}
 	}
 
 	@SubscribeEvent
 	public static void onTick(EntityTickEvent.Post event) {
-		if (event.getEntity() instanceof Villager target) {
+		if (event.getEntity().getType().is(QuillTags.RIDERS)) {
 			if (QuillConfig.TAXI.get()) {
-				Player player = target.level().getNearestPlayer(target, 2);
+				Player player = event.getEntity().level().getNearestPlayer(event.getEntity(), 6);
 				if (player != null && player.isPassenger()) {
-					if (player.getVehicle().getType().is(QuillTags.DOUBLE) && player.getVehicle().getPassengers().size() < 2) {
-						target.startRiding(player.getVehicle());
+					int i = QuillManager.getMaxRiders(player.getVehicle().getType());
+					if (player.getVehicle().getPassengers().size() < i && event.getEntity().distanceTo(player.getVehicle()) <= 1.0F * i) {
+						event.getEntity().startRiding(player.getVehicle());
 					}
 				}
 			}
