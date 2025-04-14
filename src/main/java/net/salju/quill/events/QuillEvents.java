@@ -212,7 +212,7 @@ public class QuillEvents {
 		ItemStack stack = event.getItemStack();
 		BlockPos pos = event.getPos();
 		BlockState state = world.getBlockState(pos);
-		if (state.is(BlockTags.CLIMBABLE) && stack.is(state.getBlock().asItem())) {
+		if (QuillConfig.LADDER.get() && state.is(QuillTags.LADDERS) && stack.is(state.getBlock().asItem())) {
 			if (world.isEmptyBlock(pos.below())) {
 				world.setBlock(pos.below(), state, 3);
 				world.playSound(player, pos.below(), state.getSoundType(world, pos.below(), player).getPlaceSound(), SoundSource.BLOCKS);

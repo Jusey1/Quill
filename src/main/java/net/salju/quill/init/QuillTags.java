@@ -21,6 +21,7 @@ public class QuillTags {
 	public static final TagKey<EntityType<?>> QUAD = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(Quill.MODID,"vehs/quad"));
 	public static final TagKey<EntityType<?>> PENTA = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(Quill.MODID,"vehs/penta"));
 	public static final TagKey<Block> SMELT = BlockTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"autosmelt"));
+	public static final TagKey<Block> LADDERS = BlockTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"ladders"));
 	public static final TagKey<Item> AXES = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"axes"));
 	public static final TagKey<Item> BOWS = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"bows"));
 	public static final TagKey<Item> SHIELDS = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"shields"));
