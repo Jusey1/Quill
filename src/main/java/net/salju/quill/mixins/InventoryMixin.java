@@ -18,7 +18,7 @@ public class InventoryMixin {
 			ci.cancel();
 			for (int i = 0; i < invy.getContainerSize(); i++) {
 				ItemStack stack = invy.getItem(i);
-				if (i < 9 || stack.is(QuillTags.PROTECTED)) {
+				if (i < 9 || i > 35 || stack.is(QuillTags.PROTECTED)) {
 					continue;
 				}
 				if (!stack.isEmpty()) {

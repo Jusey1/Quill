@@ -7,7 +7,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import net.salju.quill.init.QuillConfig;
 import net.salju.quill.init.QuillTags;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 
 @Mixin(ServerPlayer.class)
@@ -18,15 +17,10 @@ public class ServerPlayerMixin {
 			ServerPlayer ply = (ServerPlayer) (Object) this;
 			for (int i = 0; i < dead.getInventory().getContainerSize(); i++) {
 				ItemStack stack = dead.getInventory().getItem(i);
-				if (i < 9 || stack.is(QuillTags.PROTECTED)) {
+				if (i < 9 || i > 35 || stack.is(QuillTags.PROTECTED)) {
 					ply.getInventory().setItem(i, dead.getInventory().getItem(i));
 				}
 			}
-			ply.setItemSlot(EquipmentSlot.HEAD, dead.getItemBySlot(EquipmentSlot.HEAD));
-			ply.setItemSlot(EquipmentSlot.CHEST, dead.getItemBySlot(EquipmentSlot.CHEST));
-			ply.setItemSlot(EquipmentSlot.LEGS, dead.getItemBySlot(EquipmentSlot.LEGS));
-			ply.setItemSlot(EquipmentSlot.FEET, dead.getItemBySlot(EquipmentSlot.FEET));
-			ply.setItemSlot(EquipmentSlot.OFFHAND, dead.getItemBySlot(EquipmentSlot.OFFHAND));
 		}
 	}
 }

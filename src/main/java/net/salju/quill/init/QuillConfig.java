@@ -11,7 +11,6 @@ public class QuillConfig {
 	public static final ModConfigSpec.BooleanValue POTS;
 	public static final ModConfigSpec.BooleanValue FARMER;
 	public static final ModConfigSpec.BooleanValue WEAPONS;
-	public static final ModConfigSpec.BooleanValue SWORD;
 	public static final ModConfigSpec.BooleanValue LADDER;
 	public static final ModConfigSpec.BooleanValue VAULT;
 
@@ -40,7 +39,6 @@ public class QuillConfig {
 		POTS = BUILDER.comment("Should potions be stackable?").define("Stackable Potions", true);
 		FARMER = BUILDER.comment("Should hoes have the ability to harvest crops?").define("Hoe Harvesting", true);
 		WEAPONS = BUILDER.comment("Should some weapons have their stats tweaked by this mod?").define("Weapons Rebalanced", true);
-		SWORD = BUILDER.comment("Should sword blocking be returned for tagged swords?").define("Sword Blocking", false);
 		LADDER = BUILDER.comment("Should improved ladder placing be enabled?").define("Better Ladders", true);
 		VAULT = BUILDER.comment("Should Vaults be reusable by the player?").define("Better Vaults", false);
 		BUILDER.pop();

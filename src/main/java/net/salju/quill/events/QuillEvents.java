@@ -25,7 +25,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Mth;
@@ -36,7 +35,6 @@ import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.*;
-import net.minecraft.world.item.component.BlocksAttacks;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
@@ -267,9 +265,6 @@ public class QuillEvents {
 
 	@SubscribeEvent
 	public static void onAttributes(ItemAttributeModifierEvent event) {
-		if (event.getItemStack().is(QuillTags.SWORDS) && QuillConfig.SWORD.get()) {
-			event.getItemStack().set(DataComponents.BLOCKS_ATTACKS, new BlocksAttacks(0.15F, 0.5F, List.of(new BlocksAttacks.DamageReduction(45.0F, Optional.empty(), 0.25F, 1.0F)), new BlocksAttacks.ItemDamageFunction(1.0F, 1.0F, 1.0F), Optional.of(QuillTags.BYPASS_SWORD), Optional.of(Holder.direct(SoundEvents.EMPTY)), Optional.of(SoundEvents.ITEM_BREAK)));
-		}
 		if (QuillConfig.WEAPONS.get()) {
 			if (event.getItemStack().is(QuillTags.SPECIALS)) {
 				event.replaceModifier(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_ID, -2.8F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);

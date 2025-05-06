@@ -4,7 +4,6 @@ import net.salju.quill.Quill;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -12,7 +11,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.registries.Registries;
 
 public class QuillTags {
-	public static final TagKey<DamageType> BYPASS_SWORD = TagKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath(Quill.MODID, "bypasses_sword"));
 	public static final TagKey<EntityType<?>> PEACEFUL = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(Quill.MODID, "forceful_peaceful"));
 	public static final TagKey<EntityType<?>> NO = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(Quill.MODID,"disable_griefing"));
 	public static final TagKey<EntityType<?>> RIDERS = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(Quill.MODID,"riders"));
