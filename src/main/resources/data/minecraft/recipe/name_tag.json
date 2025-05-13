@@ -1,0 +1,24 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:mod_loaded",
+        "modid": "create"
+      }
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": "minecraft:black_dye",
+    "S": "minecraft:string",
+    "I": "minecraft:iron_ingot"
+  },
+  "pattern": [
+    "DSI"
+  ],
+  "result": {
+    "id": "minecraft:name_tag"
+  }
+}

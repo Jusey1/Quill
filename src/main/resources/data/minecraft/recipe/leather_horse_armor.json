@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "quill_horse_armor",
+  "key": {
+    "X": "minecraft:leather",
+    "S": "minecraft:leather"
+  },
+  "pattern": [
+    "XSX",
+    "X X"
+  ],
+  "result": {
+    "id": "minecraft:leather_horse_armor"
+  }
+}
