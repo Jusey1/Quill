@@ -6,8 +6,8 @@
     "S": "minecraft:iron_ingot"
   },
   "pattern": [
-    " L ",
-    "LSL"
+    "LLL",
+    "S S"
   ],
   "result": {
     "id": "minecraft:saddle"
