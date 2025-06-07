@@ -278,7 +278,7 @@ public class QuillEvents {
 
 	@SubscribeEvent
 	public static void onGrindstone(GrindstoneEvent.OnPlaceItem event) {
-		if (QuillConfig.ENCHS.get() && QuillConfig.GRIND.get() && event.getTopItem().isEnchanted() && event.getBottomItem().is(Items.ENCHANTED_BOOK)) {
+		if (QuillConfig.GRIND.get() && event.getTopItem().isEnchanted() && event.getBottomItem().is(Items.ENCHANTED_BOOK)) {
 			ItemStack stack = new ItemStack(Items.ENCHANTED_BOOK);
 			ItemEnchantments.Mutable enchs = new ItemEnchantments.Mutable(EnchantmentHelper.getEnchantmentsForCrafting(event.getTopItem()));
 			ItemEnchantments.Mutable map = new ItemEnchantments.Mutable(EnchantmentHelper.getEnchantmentsForCrafting(event.getBottomItem()));
@@ -298,53 +298,51 @@ public class QuillEvents {
 
 	@SubscribeEvent
 	public static void onAnvil(AnvilUpdateEvent event) {
-		if (QuillConfig.ENCHS.get()) {
-			if (QuillConfig.REPAIR.get() && QuillManager.isValidRepairItem(event.getLeft(), event.getRight()) && event.getLeft().isDamaged()) {
-				ItemStack stack = event.getLeft().copy();
-				int i = (stack.getDamageValue() > (stack.getMaxDamage() / 2) && event.getRight().getCount() > 1) ? 2 : 1;
-				stack.setDamageValue(Math.max(stack.getDamageValue() - ((stack.getMaxDamage() / 2) * i), 0));
-				event.setCost(i);
-				event.setMaterialCost(i);
-				event.setOutput(stack);
-			} else if (QuillConfig.ANBOOK.get() && (event.getLeft().isEnchantable() || event.getLeft().is(Items.ENCHANTED_BOOK) || event.getLeft().isEnchanted()) && (event.getRight().is(Items.ENCHANTED_BOOK) || (event.getRight().is(event.getLeft().getItem()) && event.getRight().isEnchanted()))) {
-				ItemEnchantments.Mutable map = event.getLeft().isEnchanted() || event.getLeft().is(Items.ENCHANTED_BOOK) ? new ItemEnchantments.Mutable(EnchantmentHelper.getEnchantmentsForCrafting(event.getLeft().copy())) : new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
-				ItemEnchantments.Mutable book = new ItemEnchantments.Mutable(EnchantmentHelper.getEnchantmentsForCrafting(event.getRight()));
-				int i = 0;
-				for (Holder<Enchantment> e : book.keySet()) {
-					int p = Math.min(map.getLevel(e) == book.getLevel(e) ? book.getLevel(e) + 1 : book.getLevel(e), e.value().getMaxLevel());
-					boolean check = event.getLeft().is(Items.ENCHANTED_BOOK) || event.getLeft().supportsEnchantment(e);
-					for (Holder<Enchantment> target : map.keySet()) {
-						if ((e != target && !EnchantmentHelper.isEnchantmentCompatible(map.keySet(), e)) || (e == target && map.getLevel(e) >= p)) {
-							check = false;
-						}
-					}
-					if (check && (e.is(EnchantmentTags.CURSE) || p > map.getLevel(e))) {
-						map.set(e, p);
-						i = (i + ((p * 4) / 2));
+		if (QuillConfig.REPAIR.get() && QuillManager.isValidRepairItem(event.getLeft(), event.getRight()) && event.getLeft().isDamaged()) {
+			ItemStack stack = event.getLeft().copy();
+			int i = (stack.getDamageValue() > (stack.getMaxDamage() / 2) && event.getRight().getCount() > 1) ? 2 : 1;
+			stack.setDamageValue(Math.max(stack.getDamageValue() - ((stack.getMaxDamage() / 2) * i), 0));
+			event.setCost(i);
+			event.setMaterialCost(i);
+			event.setOutput(stack);
+		} else if (QuillConfig.ANBOOK.get() && (event.getLeft().isEnchantable() || event.getLeft().is(Items.ENCHANTED_BOOK) || event.getLeft().isEnchanted()) && (event.getRight().is(Items.ENCHANTED_BOOK) || (event.getRight().is(event.getLeft().getItem()) && event.getRight().isEnchanted()))) {
+			ItemEnchantments.Mutable map = event.getLeft().isEnchanted() || event.getLeft().is(Items.ENCHANTED_BOOK) ? new ItemEnchantments.Mutable(EnchantmentHelper.getEnchantmentsForCrafting(event.getLeft().copy())) : new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
+			ItemEnchantments.Mutable book = new ItemEnchantments.Mutable(EnchantmentHelper.getEnchantmentsForCrafting(event.getRight()));
+			int i = 0;
+			for (Holder<Enchantment> e : book.keySet()) {
+				int p = Math.min(map.getLevel(e) == book.getLevel(e) ? book.getLevel(e) + 1 : book.getLevel(e), e.value().getMaxLevel());
+				boolean check = event.getLeft().is(Items.ENCHANTED_BOOK) || event.getLeft().supportsEnchantment(e);
+				for (Holder<Enchantment> target : map.keySet()) {
+					if ((e != target && !EnchantmentHelper.isEnchantmentCompatible(map.keySet(), e)) || (e == target && map.getLevel(e) >= p)) {
+						check = false;
 					}
 				}
-				if (i > 0) {
-					ItemStack stack = event.getLeft().copy();
-					if (event.getName() != null && !StringUtil.isBlank(event.getName()) && !event.getName().equals(stack.getHoverName().getString())) {
-						stack.set(DataComponents.CUSTOM_NAME, Component.literal(event.getName()));
-					}
-					if (stack.isEnchanted()) {
-						EnchantmentHelper.setEnchantments(stack, ItemEnchantments.EMPTY);
-					}
-					EnchantmentHelper.setEnchantments(stack, map.toImmutable());
-					event.setCost(Math.min(i, QuillConfig.MAXANBOOKCOST.get()));
-					event.setMaterialCost(1);
-					event.setOutput(stack);
-				} else {
-					event.setCanceled(true);
+				if (check && (e.is(EnchantmentTags.CURSE) || p > map.getLevel(e))) {
+					map.set(e, p);
+					i = (i + ((p * 4) / 2));
 				}
-			} else if (QuillConfig.RENAME.get() && !event.getLeft().isEmpty() && event.getRight().isEmpty() && event.getName() != null && !StringUtil.isBlank(event.getName()) && !event.getName().equals(event.getLeft().getHoverName().getString())) {
+			}
+			if (i > 0) {
 				ItemStack stack = event.getLeft().copy();
-				stack.set(DataComponents.CUSTOM_NAME, Component.literal(event.getName()));
-				event.setCost(1);
+				if (event.getName() != null && !StringUtil.isBlank(event.getName()) && !event.getName().equals(stack.getHoverName().getString())) {
+					stack.set(DataComponents.CUSTOM_NAME, Component.literal(event.getName()));
+				}
+				if (stack.isEnchanted()) {
+					EnchantmentHelper.setEnchantments(stack, ItemEnchantments.EMPTY);
+				}
+				EnchantmentHelper.setEnchantments(stack, map.toImmutable());
+				event.setCost(Math.min(i, QuillConfig.MAXANBOOKCOST.get()));
 				event.setMaterialCost(1);
 				event.setOutput(stack);
+			} else {
+				event.setCanceled(true);
 			}
+		} else if (QuillConfig.RENAME.get() && !event.getLeft().isEmpty() && event.getRight().isEmpty() && event.getName() != null && !StringUtil.isBlank(event.getName()) && !event.getName().equals(event.getLeft().getHoverName().getString())) {
+			ItemStack stack = event.getLeft().copy();
+			stack.set(DataComponents.CUSTOM_NAME, Component.literal(event.getName()));
+			event.setCost(1);
+			event.setMaterialCost(1);
+			event.setOutput(stack);
 		}
 	}
 

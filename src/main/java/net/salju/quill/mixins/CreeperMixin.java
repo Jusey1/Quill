@@ -1,7 +1,6 @@
 package net.salju.quill.mixins;
 
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.level.ExplosionDamageCalculator;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.Inject;

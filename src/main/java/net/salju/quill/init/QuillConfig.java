@@ -24,7 +24,7 @@ public class QuillConfig {
 	public static final ModConfigSpec.BooleanValue CAMPFIRE;
 	public static final ModConfigSpec.IntValue CAMPRANGE;
 
-	public static final ModConfigSpec.BooleanValue ENCHS;
+	public static final ModConfigSpec.BooleanValue UNBREAKABLE;
 	public static final ModConfigSpec.BooleanValue UNBREAKING;
 	public static final ModConfigSpec.BooleanValue REPAIR;
 	public static final ModConfigSpec.BooleanValue ANBOOK;
@@ -54,8 +54,8 @@ public class QuillConfig {
 		CAMPRANGE = BUILDER.comment("Campfire's range for disabling enemy spawning.").defineInRange("Campfire Range", 64, 0, Integer.MAX_VALUE);
 		BUILDER.pop();
 		BUILDER.push("Enchantment Configuration");
-		ENCHS = BUILDER.comment("Should this mod's enchantment rework be in effect?").define("Enchantments Rework", true);
-		UNBREAKING = BUILDER.comment("Should enchanted equipment be unbreakable?").define("Unbreaking Protection", true);
+		UNBREAKABLE = BUILDER.comment("Should enchanted equipment be unbreakable?").define("Unbreakable Protection", false);
+		UNBREAKING = BUILDER.comment("Should equipment be unbreakable with the Unbreaking Enchantment?").define("Unbreaking Protection", false);
 		REPAIR = BUILDER.comment("Should repairing equipment be better & only costing 1 level?").define("Better Anvil Repair", true);
 		ANBOOK = BUILDER.comment("Should this mod adjust combining enchanted items on an anvil?").define("Better Anvil Enchanting", true);
 		MAXANBOOKCOST = BUILDER.comment("Maximum cost on an anvil when combining?").defineInRange("Max Anvil Cost", 15, 0, 45);
