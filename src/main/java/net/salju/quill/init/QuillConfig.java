@@ -45,7 +45,7 @@ public class QuillConfig {
 		BUILDER.push("Player & Entity Configuration");
 		DEATH = BUILDER.comment("Should hotbar & equipment be kept on death?").define("Death Protection", true);
 		CREEPER = BUILDER.comment("Should creepers be prideful?").define("Prideful Creepers", true);
-		FROGGO = BUILDER.comment("Should witches turn Nitwits into frogs? (Currently Disabled)").define("Frog Transfiguration", true);
+		FROGGO = BUILDER.comment("Should witches turn Nitwits into frogs?").define("Frog Transfiguration", true);
 		PEACEFUL = BUILDER.comment("Should tagged mobs be peaceful by default unless provoked?").define("Peaceful Mobs", false);
 		NO = BUILDER.comment("Should tagged mobs be unallowed to grief blocks?").define("Stop That", false);
 		TAXI = BUILDER.comment("Should villagers join a player's camel or boat by simply being nearby?").define("Taxi Camel", true);

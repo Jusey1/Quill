@@ -18,6 +18,7 @@ public class QuillTags {
 	public static final TagKey<EntityType<?>> TRIPLE = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(Quill.MODID,"vehs/triple"));
 	public static final TagKey<EntityType<?>> QUAD = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(Quill.MODID,"vehs/quad"));
 	public static final TagKey<EntityType<?>> PENTA = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(Quill.MODID,"vehs/penta"));
+	public static final TagKey<EntityType<?>> FROGGO = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(Quill.MODID,"can_be_transformed_into_frog"));
 	public static final TagKey<Block> SMELT = BlockTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"autosmelt"));
 	public static final TagKey<Block> LADDERS = BlockTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"ladders"));
 	public static final TagKey<Item> AXES = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"axes"));

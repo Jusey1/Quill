@@ -25,6 +25,8 @@ public class Quill {
 		QuillItems.REGISTRY.register(bus);
 		QuillSounds.REGISTRY.register(bus);
 		QuillTabs.REGISTRY.register(bus);
+		QuillWitch.EFFECTS.register(bus);
+		QuillWitch.POTIONS.register(bus);
 		mod.registerConfig(ModConfig.Type.COMMON, QuillConfig.CONFIG, "quill-common.toml");
 	}
 
