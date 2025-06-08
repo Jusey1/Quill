@@ -10,6 +10,8 @@
      "BrushableBlockEntityMixin",
      "VaultServerDataMixin",
      "CreeperMixin",
+     "FrogAccessor",
+     "WitchMixin",
      "ServerPlayerMixin",
      "InventoryMixin"
   ],
