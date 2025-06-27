@@ -4,7 +4,7 @@ import net.salju.quill.Quill;
 import net.salju.quill.item.component.BundleHoldingTooltip;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -47,13 +47,13 @@ public record ClientBundleHoldingTooltip(BundleHoldingTooltip tip) implements Cl
 			//
 		} else {
 			if (tip.getContents().getSelectedItem() == i) {
-				gui.blitSprite(RenderType::guiTextured, SLOT_HIGHLIGHT_BACK, x, y, 18, 18);
+				gui.blitSprite(RenderPipelines.GUI_TEXTURED, SLOT_HIGHLIGHT_BACK, x, y, 18, 18);
 			}
 			ItemStack stack = tip.getContents().getSpecificItem(i);
 			gui.renderItem(stack, x + 1, y + 1, i);
 			gui.renderItemDecorations(f, stack, x + 1, y + 1);
 			if (tip.getContents().getSelectedItem() == i) {
-				gui.blitSprite(RenderType::guiTextured, SLOT_HIGHLIGHT_FRONT, x, y, 18, 18);
+				gui.blitSprite(RenderPipelines.GUI_TEXTURED, SLOT_HIGHLIGHT_FRONT, x, y, 18, 18);
 			}
 		}
 	}

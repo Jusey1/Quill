@@ -87,7 +87,7 @@ public class MagicMirrorItem extends Item {
 			double x = data.getPos().getX() + 0.5;
 			double y = data.getPos().getY() + (ply.getRespawnConfig() != null ? 0.7 : 0.0);
 			double z = data.getPos().getZ() + 0.5;
-			ServerLevel loc = ply.server.getLevel(data.target().get().dimension());
+			ServerLevel loc = ply.getServer().getLevel(data.target().get().dimension());
 			if (loc != null) {
 				lvl.playSound(null, ply.blockPosition(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.0F, (float) (0.8F + (Math.random() * 0.2)));
 				lvl.sendParticles(ParticleTypes.PORTAL, ply.getX(), ply.getY(), ply.getZ(), 12, 0.5, 0.5, 0.5, 0.65);

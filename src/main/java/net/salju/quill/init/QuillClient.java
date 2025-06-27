@@ -11,7 +11,7 @@ import net.neoforged.neoforge.client.event.RegisterConditionalItemModelPropertyE
 import net.neoforged.neoforge.client.event.RegisterItemModelsEvent;
 import net.minecraft.resources.ResourceLocation;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(value = Dist.CLIENT)
 public class QuillClient {
 	@SubscribeEvent
 	public static void registerTooltips(RegisterClientTooltipComponentFactoriesEvent event) {
