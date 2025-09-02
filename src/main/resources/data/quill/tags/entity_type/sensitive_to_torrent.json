@@ -17,6 +17,10 @@
     {
       "id": "friendsandfoes:wildfire",
       "required": false
+    },
+    {
+      "id": "revotedwildfire:wildfire",
+      "required": false
     }
   ]
 }
