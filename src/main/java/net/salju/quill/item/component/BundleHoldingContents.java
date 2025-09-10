@@ -17,11 +17,6 @@ public record BundleHoldingContents(List<ItemStack> items, int target) {
 		this(items, -1);
 	}
 
-	public BundleHoldingContents(List<ItemStack> items, int target) {
-		this.items = items;
-		this.target = target;
-	}
-
 	@Override
 	public String toString() {
 		return "BundleHoldingContents" + this.getItems();
