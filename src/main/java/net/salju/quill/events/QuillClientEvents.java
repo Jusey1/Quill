@@ -40,8 +40,8 @@ public class QuillClientEvents {
 		if (event.getScreen() instanceof AbstractContainerScreen<?> screen) {
 			for (Slot slot : screen.getMenu().slots) {
 				ItemStack stack = slot.getItem();
-				if (slot.hasItem() && slot != screen.getSlotUnderMouse() && stack.getItem() instanceof BundleHoldingItem target) {
-					if (target.getSelectedItem(stack) != -1) {
+				if (slot.hasItem() && stack.getItem() instanceof BundleHoldingItem target) {
+					if (slot != screen.getSlotUnderMouse() && target.getSelectedItem(stack) != -1) {
 						stack.set(QuillData.BUNDLE, new BundleHoldingContents(target.getContents(stack), -1));
 					}
 				}
