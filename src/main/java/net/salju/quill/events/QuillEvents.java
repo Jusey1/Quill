@@ -315,6 +315,8 @@ public class QuillEvents {
 				for (Holder<Enchantment> target : map.keySet()) {
 					if ((e != target && !EnchantmentHelper.isEnchantmentCompatible(map.keySet(), e)) || (e == target && map.getLevel(e) >= p)) {
 						check = false;
+					} else if  (e == target && map.getLevel(e) < p) {
+						check = true;
 					}
 				}
 				if (check && (e.is(EnchantmentTags.CURSE) || p > map.getLevel(e))) {
