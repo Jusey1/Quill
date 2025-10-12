@@ -63,12 +63,12 @@ public class MagicMirrorItem extends Item {
 		MagicMirrorTeleport data = stack.getOrDefault(QuillData.TELEPORT, MagicMirrorTeleport.EMPTY);
 		if (target instanceof ServerPlayer ply) {
 			if (ply.getRespawnConfig() == null) {
-				if (!BlockPos.containing(data.getPos().getX(), data.getPos().getY(), data.getPos().getZ()).equals(lvl.getLevelData().getSpawnPos())) {
-					stack.set(QuillData.TELEPORT, new MagicMirrorTeleport(Optional.of(GlobalPos.of(Level.OVERWORLD, lvl.getLevelData().getSpawnPos()))));
+				if (!BlockPos.containing(data.getPos().getX(), data.getPos().getY(), data.getPos().getZ()).equals(lvl.getLevelData().getRespawnData().pos())) {
+					stack.set(QuillData.TELEPORT, new MagicMirrorTeleport(Optional.of(GlobalPos.of(Level.OVERWORLD, lvl.getLevelData().getRespawnData().pos()))));
 				}
 			} else {
-				if (!BlockPos.containing(data.getPos().getX(), data.getPos().getY(), data.getPos().getZ()).equals(ply.getRespawnConfig().pos())) {
-					stack.set(QuillData.TELEPORT, new MagicMirrorTeleport(Optional.of(GlobalPos.of(ply.getRespawnConfig().dimension(), ply.getRespawnConfig().pos()))));
+				if (!BlockPos.containing(data.getPos().getX(), data.getPos().getY(), data.getPos().getZ()).equals(ply.getRespawnConfig().respawnData().pos())) {
+					stack.set(QuillData.TELEPORT, new MagicMirrorTeleport(Optional.of(GlobalPos.of(ply.getRespawnConfig().respawnData().dimension(), ply.getRespawnConfig().respawnData().pos()))));
 				}
 			}
 		}
@@ -87,7 +87,7 @@ public class MagicMirrorItem extends Item {
 			double x = data.getPos().getX() + 0.5;
 			double y = data.getPos().getY() + (ply.getRespawnConfig() != null ? 0.7 : 0.0);
 			double z = data.getPos().getZ() + 0.5;
-			ServerLevel loc = ply.getServer().getLevel(data.target().get().dimension());
+			ServerLevel loc = lvl.getServer().getLevel(data.target().get().dimension());
 			if (loc != null) {
 				lvl.playSound(null, ply.blockPosition(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.0F, (float) (0.8F + (Math.random() * 0.2)));
 				lvl.sendParticles(ParticleTypes.PORTAL, ply.getX(), ply.getY(), ply.getZ(), 12, 0.5, 0.5, 0.5, 0.65);

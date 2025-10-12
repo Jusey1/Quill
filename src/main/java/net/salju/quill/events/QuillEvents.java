@@ -65,7 +65,7 @@ public class QuillEvents {
 					if (item.isAlive() && player.isCrouching() && QuillManager.isValidMagneticItem(player, item.getItem())) {
 						item.setNoGravity(true);
 						Vec3 v = player.getEyePosition().subtract(item.position());
-						if (item.level().isClientSide) {
+						if (item.level().isClientSide()) {
 							item.yOld = item.getY();
 						}
 						item.setDeltaMovement(item.getDeltaMovement().scale(0.95D).add(v.normalize().scale(0.05D)));

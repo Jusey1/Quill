@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.resources.model.ResolvableModel;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import com.mojang.serialization.MapCodec;
@@ -16,7 +16,7 @@ public class BundleHoldingRenderer implements ItemModel {
 	private static final ItemModel INSTANCE = new BundleHoldingRenderer();
 
 	@Override
-	public void update(ItemStackRenderState render, ItemStack bundle, ItemModelResolver resolver, ItemDisplayContext context, @Nullable ClientLevel lvl, @Nullable LivingEntity target, int i) {
+	public void update(ItemStackRenderState render, ItemStack bundle, ItemModelResolver resolver, ItemDisplayContext context, @Nullable ClientLevel lvl, @Nullable ItemOwner target, int i) {
 		ItemStack stack = BundleHoldingItem.getSelectedItemStack(bundle);
 		if (!stack.isEmpty()) {
 			resolver.appendItemLayers(render, stack, context, lvl, target, i);

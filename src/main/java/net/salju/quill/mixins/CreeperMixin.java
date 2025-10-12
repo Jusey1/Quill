@@ -13,6 +13,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.entity.monster.Creeper;
@@ -30,7 +31,8 @@ public abstract class CreeperMixin {
 					lvl.playSound(null, creeper.blockPosition(), QuillSounds.CHEERS.get(), SoundSource.HOSTILE, 1.0F, 1.0F);
 				}
 				PacketDistributor.sendToPlayersNear(lvl, null, creeper.getX(), creeper.getY(), creeper.getZ(), 32, new Fireworks(creeper.blockPosition()));
-				lvl.explode(creeper, Explosion.getDefaultDamageSource(lvl, creeper), null, creeper.getX(), creeper.getY(), creeper.getZ(), 3.0F * f, false, Level.ExplosionInteraction.NONE, ParticleTypes.CRIT, ParticleTypes.CRIT, QuillSounds.EMPTY);
+                WeightedList list = WeightedList.builder().build();
+				lvl.explode(creeper, Explosion.getDefaultDamageSource(lvl, creeper), null, creeper.getX(), creeper.getY(), creeper.getZ(), 3.0F * f, false, Level.ExplosionInteraction.NONE, ParticleTypes.CRIT, ParticleTypes.CRIT, list, QuillSounds.EMPTY);
 				spawnLingeringCloud();
 				creeper.discard();
 			}
