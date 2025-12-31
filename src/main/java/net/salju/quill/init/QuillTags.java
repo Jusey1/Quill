@@ -26,10 +26,10 @@ public class QuillTags {
 	public static final TagKey<Item> SHIELDS = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"shields"));
 	public static final TagKey<Item> SWORDS = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"swords"));
 	public static final TagKey<Item> SPECIALS = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"unique_weapons"));
-	public static final TagKey<Item> NETHER = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"netherite_axe_tier"));
-	public static final TagKey<Item> DIAMOND = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"diamond_axe_tier"));
-	public static final TagKey<Item> IRON = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"iron_axe_tier"));
-	public static final TagKey<Item> STONE = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"stone_axe_tier"));
+	public static final TagKey<Item> NETHER = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"netherite_tier"));
+	public static final TagKey<Item> DIAMOND = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"diamond_tier"));
+	public static final TagKey<Item> IRON = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"iron_tier"));
+	public static final TagKey<Item> STONE = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"stone_tier"));
 	public static final TagKey<Item> ENCHS = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"enchantables"));
 	public static final TagKey<Item> PROTECTED = ItemTags.create(ResourceLocation.fromNamespaceAndPath(Quill.MODID,"protected"));
 }
