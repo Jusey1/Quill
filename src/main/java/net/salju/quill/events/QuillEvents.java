@@ -21,7 +21,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.server.level.ServerLevel;
@@ -44,8 +44,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.frog.Frog;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.entity.projectile.Arrow;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.Arrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Phantom;
@@ -101,7 +101,7 @@ public class QuillEvents {
 	@SubscribeEvent
 	public static void onDeathDrops(LivingDropsEvent event) {
 		if (event.getEntity().getType().equals(EntityType.MAGMA_CUBE) && event.getSource().getEntity() instanceof Frog frog) {
-			if (frog.getVariant().is(ResourceLocation.fromNamespaceAndPath(Quill.MODID, "witch")) && event.getEntity().level() instanceof ServerLevel lvl) {
+			if (frog.getVariant().is(Identifier.fromNamespaceAndPath(Quill.MODID, "witch")) && event.getEntity().level() instanceof ServerLevel lvl) {
 				event.getEntity().spawnAtLocation(lvl, new ItemStack(QuillItems.AZURE.get()));
 			}
 		}
@@ -192,6 +192,13 @@ public class QuillEvents {
 		}
 	}
 
+    @SubscribeEvent
+    public static void onItemUse(PlayerInteractEvent.RightClickItem event) {
+        if (QuillConfig.SPEARS.get() && event.getItemStack().is(QuillTags.SPEARS) && event.getEntity().getOffhandItem().getItem() instanceof ShieldItem) {
+            event.setCanceled(true);
+        }
+    }
+
 	@SubscribeEvent
 	public static void onRightClickEntity(PlayerInteractEvent.EntityInteract event) {
 		Player player = event.getEntity();
@@ -265,15 +272,16 @@ public class QuillEvents {
 
 	@SubscribeEvent
 	public static void onAttributes(ItemAttributeModifierEvent event) {
-		if (QuillConfig.WEAPONS.get()) {
-			if (event.getItemStack().is(QuillTags.SPECIALS)) {
-				event.replaceModifier(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_ID, -2.8F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
-				event.replaceModifier(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, 7.0F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
-			} else if (event.getItemStack().is(QuillTags.AXES)) {
-				event.replaceModifier(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_ID, -3.0F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
-				event.replaceModifier(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, 5.0F + QuillManager.getBonusDamage(event.getItemStack()), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
-			}
-		}
+		if (event.getItemStack().is(QuillTags.SPECIALS) && QuillConfig.WEAPONS.get()) {
+			event.replaceModifier(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_ID, -2.8F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+			event.replaceModifier(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, 7.0F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+		} else if (event.getItemStack().is(QuillTags.AXES) && QuillConfig.AXES.get()) {
+			event.replaceModifier(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_ID, -3.0F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+			event.replaceModifier(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, 5.0F + QuillManager.getBonusDamage(event.getItemStack()), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+		} else if (event.getItemStack().is(QuillTags.SPEARS) && QuillConfig.SPEARS.get()) {
+            event.replaceModifier(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_ID, -2.8F + QuillManager.reduceBonusSpeed(event.getItemStack()), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+            event.replaceModifier(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, 3.0F + QuillManager.getBonusDamage(event.getItemStack()), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+        }
 	}
 
 	@SubscribeEvent
@@ -350,7 +358,7 @@ public class QuillEvents {
 
 	@SubscribeEvent
 	public static void onBlockAttack(PlayerInteractEvent.LeftClickBlock event) {
-		if (QuillConfig.WEAPONS.get() && event.getEntity().isCreative() && event.getItemStack().is(QuillTags.AXES)) {
+		if (QuillConfig.AXES.get() && event.getEntity().isCreative() && event.getItemStack().is(QuillTags.AXES)) {
 			event.setCanceled(true);
 		}
 	}

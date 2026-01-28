@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.core.SectionPos;
@@ -21,7 +21,7 @@ import net.minecraft.core.BlockPos;
 
 public class QuillManager {
 	public static int getEnchantmentLevel(ItemStack stack, Level world, String id, String name) {
-		return stack.getEnchantmentLevel(world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(ResourceKey.create(Registries.ENCHANTMENT, ResourceLocation.fromNamespaceAndPath(id, name))));
+		return stack.getEnchantmentLevel(world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(ResourceKey.create(Registries.ENCHANTMENT, Identifier.fromNamespaceAndPath(id, name))));
 	}
 
 	public static float getBonusDamage(ItemStack stack) {
@@ -36,6 +36,15 @@ public class QuillManager {
 		}
 		return 0.0F;
 	}
+
+    public static float reduceBonusSpeed(ItemStack stack) {
+        if (stack.is(QuillTags.NETHER)) {
+            return -0.2F;
+        } else if (stack.is(QuillTags.DIAMOND)) {
+            return -0.1F;
+        }
+        return 0.0F;
+    }
 
 	public static int getMaxRiders(EntityType<?> type) {
 		if (type.is(QuillTags.DOUBLE)) {

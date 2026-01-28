@@ -6,7 +6,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.Item;
@@ -24,6 +24,6 @@ public class QuillItems {
 	}
 
 	public static Item.Properties createBaseProps(String name) {
-		return new Item.Properties().setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Quill.MODID, name)));
+		return new Item.Properties().setId(ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(Quill.MODID, name)));
 	}
 }

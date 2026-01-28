@@ -6,12 +6,12 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 
 public record ClientBundleHoldingTooltip(BundleHoldingTooltip tip) implements ClientTooltipComponent {
-	private static final ResourceLocation SLOT_HIGHLIGHT_BACK = ResourceLocation.fromNamespaceAndPath(Quill.MODID, "bundle/slot_highlight_back");
-	private static final ResourceLocation SLOT_HIGHLIGHT_FRONT = ResourceLocation.fromNamespaceAndPath(Quill.MODID, "bundle/slot_highlight_front");
+	private static final Identifier SLOT_HIGHLIGHT_BACK = Identifier.fromNamespaceAndPath(Quill.MODID, "bundle/slot_highlight_back");
+	private static final Identifier SLOT_HIGHLIGHT_FRONT = Identifier.fromNamespaceAndPath(Quill.MODID, "bundle/slot_highlight_front");
 
 	@Override
 	public int getHeight(Font f) {

@@ -11,7 +11,7 @@ import net.neoforged.neoforge.client.event.RegisterClientTooltipComponentFactori
 import net.neoforged.neoforge.client.event.RegisterConditionalItemModelPropertyEvent;
 import net.neoforged.neoforge.client.event.RegisterItemModelsEvent;
 import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 @EventBusSubscriber(value = Dist.CLIENT)
 public class QuillClient {
@@ -22,12 +22,12 @@ public class QuillClient {
 
 	@SubscribeEvent
 	public static void registerConditionalProps(RegisterConditionalItemModelPropertyEvent event) {
-		event.register(ResourceLocation.fromNamespaceAndPath(Quill.MODID, "bundle/has_selected_item"), BundleHoldingCondition.MAP_CODEC);
+		event.register(Identifier.fromNamespaceAndPath(Quill.MODID, "bundle/has_selected_item"), BundleHoldingCondition.MAP_CODEC);
 	}
 
 	@SubscribeEvent
 	public static void registerItemModels(RegisterItemModelsEvent event) {
-		event.register(ResourceLocation.fromNamespaceAndPath(Quill.MODID, "bundle/selected_item"), BundleHoldingRenderer.Unbaked.MAP_CODEC);
+		event.register(Identifier.fromNamespaceAndPath(Quill.MODID, "bundle/selected_item"), BundleHoldingRenderer.Unbaked.MAP_CODEC);
 	}
 
     @SubscribeEvent
