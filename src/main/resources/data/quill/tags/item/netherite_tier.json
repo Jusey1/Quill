@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "minecraft:netherite_axe"
+    "minecraft:netherite_axe",
+    "minecraft:netherite_spear"
   ]
 }

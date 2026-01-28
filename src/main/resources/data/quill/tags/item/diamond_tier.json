@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "minecraft:diamond_axe"
+    "minecraft:diamond_axe",
+    "minecraft:diamond_spear"
   ]
 }
