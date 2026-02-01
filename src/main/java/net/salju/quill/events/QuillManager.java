@@ -37,14 +37,14 @@ public class QuillManager {
 		return 0.0F;
 	}
 
-    public static float reduceBonusSpeed(ItemStack stack) {
-        if (stack.is(QuillTags.NETHER)) {
-            return -0.2F;
-        } else if (stack.is(QuillTags.DIAMOND)) {
-            return -0.1F;
-        }
-        return 0.0F;
-    }
+	public static float reduceBonusSpeed(ItemStack stack) {
+		if (stack.is(QuillTags.NETHER)) {
+			return -0.2F;
+		} else if (stack.is(QuillTags.DIAMOND)) {
+			return -0.1F;
+		}
+		return 0.0F;
+	}
 
 	public static int getMaxRiders(EntityType<?> type) {
 		if (type.is(QuillTags.DOUBLE)) {

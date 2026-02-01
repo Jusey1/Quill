@@ -24,8 +24,8 @@ public class QuillTags {
 	public static final TagKey<Item> AXES = ItemTags.create(Identifier.fromNamespaceAndPath(Quill.MODID,"axes"));
 	public static final TagKey<Item> BOWS = ItemTags.create(Identifier.fromNamespaceAndPath(Quill.MODID,"bows"));
 	public static final TagKey<Item> SHIELDS = ItemTags.create(Identifier.fromNamespaceAndPath(Quill.MODID,"shields"));
-    public static final TagKey<Item> SWORDS = ItemTags.create(Identifier.fromNamespaceAndPath(Quill.MODID,"swords"));
-    public static final TagKey<Item> SPEARS = ItemTags.create(Identifier.fromNamespaceAndPath(Quill.MODID,"spears"));
+	public static final TagKey<Item> SWORDS = ItemTags.create(Identifier.fromNamespaceAndPath(Quill.MODID,"swords"));
+	public static final TagKey<Item> SPEARS = ItemTags.create(Identifier.fromNamespaceAndPath(Quill.MODID,"spears"));
 	public static final TagKey<Item> SPECIALS = ItemTags.create(Identifier.fromNamespaceAndPath(Quill.MODID,"unique_weapons"));
 	public static final TagKey<Item> NETHER = ItemTags.create(Identifier.fromNamespaceAndPath(Quill.MODID,"netherite_tier"));
 	public static final TagKey<Item> DIAMOND = ItemTags.create(Identifier.fromNamespaceAndPath(Quill.MODID,"diamond_tier"));

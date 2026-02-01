@@ -192,12 +192,12 @@ public class QuillEvents {
 		}
 	}
 
-    @SubscribeEvent
-    public static void onItemUse(PlayerInteractEvent.RightClickItem event) {
-        if (QuillConfig.SPEARS.get() && event.getItemStack().is(QuillTags.SPEARS) && event.getEntity().getOffhandItem().getItem() instanceof ShieldItem) {
-            event.setCanceled(true);
-        }
-    }
+	@SubscribeEvent
+	public static void onItemUse(PlayerInteractEvent.RightClickItem event) {
+		if (QuillConfig.SPEARS.get() && event.getItemStack().is(QuillTags.SPEARS) && event.getEntity().getOffhandItem().getItem() instanceof ShieldItem) {
+			event.setCanceled(true);
+		}
+	}
 
 	@SubscribeEvent
 	public static void onRightClickEntity(PlayerInteractEvent.EntityInteract event) {
@@ -279,9 +279,9 @@ public class QuillEvents {
 			event.replaceModifier(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_ID, -3.0F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
 			event.replaceModifier(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, 5.0F + QuillManager.getBonusDamage(event.getItemStack()), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
 		} else if (event.getItemStack().is(QuillTags.SPEARS) && QuillConfig.SPEARS.get()) {
-            event.replaceModifier(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_ID, -2.8F + QuillManager.reduceBonusSpeed(event.getItemStack()), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
-            event.replaceModifier(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, 3.0F + QuillManager.getBonusDamage(event.getItemStack()), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
-        }
+			event.replaceModifier(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_ID, -2.8F + QuillManager.reduceBonusSpeed(event.getItemStack()), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+			event.replaceModifier(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, 3.0F + QuillManager.getBonusDamage(event.getItemStack()), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+		}
 	}
 
 	@SubscribeEvent

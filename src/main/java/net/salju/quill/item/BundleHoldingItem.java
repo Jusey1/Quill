@@ -68,14 +68,14 @@ public class BundleHoldingItem extends Item {
 	}
 
 	@Override
-	public boolean canFitInsideContainerItems() {
-		return false;
-	}
-
-	@Override
 	public void inventoryTick(ItemStack stack, ServerLevel lvl, Entity target, EquipmentSlot slot) {
 		super.inventoryTick(stack, lvl, target, slot);
 		BundleHoldingContents data = stack.getOrDefault(QuillData.BUNDLE, BundleHoldingContents.EMPTY);
+        BundleBomb fuse = stack.getOrDefault(QuillData.BOMB, BundleBomb.EMPTY);
+        if (!lvl.isClientSide() && fuse.isBomb()) {
+            stack.shrink(1);
+            lvl.explode(null, target.damageSources().badRespawnPointExplosion(target.blockPosition().getCenter()), null, target.blockPosition().getCenter(), 5.0F, true, Level.ExplosionInteraction.BLOCK);
+        }
 		if (EnchantmentHelper.hasTag(stack, EnchantmentTags.CURSE)) {
 			if (!data.isEmpty()) {
 				data.getItems().clear();
@@ -162,31 +162,34 @@ public class BundleHoldingItem extends Item {
 		}
 	}
 
-	public boolean add(ItemStack stack, ItemStack item) {
-		if (!item.isEmpty() && item.getItem().canFitInsideContainerItems()) {
+	public boolean add(ItemStack stack, ItemStack target) {
+		if (!target.isEmpty() && target.getItem().canFitInsideContainerItems()) {
 			List<ItemStack> data = new ArrayList<>(getContents(stack));
 			if (getContentWeight(stack) >= 256) {
 				return false;
 			} else {
-				int i = getMatchingItem(item, data);
+				int i = getMatchingItem(target, data);
 				if (i != -1) {
 					if (data.get(i).getCount() >= data.get(i).getMaxStackSize()) {
-						data.addFirst(item.copyWithCount(item.getCount() + getContentWeight(stack) > 256 ? 256 - getContentWeight(stack) : item.getCount()));
+						data.addFirst(target.copyWithCount(target.getCount() + getContentWeight(stack) > 256 ? 256 - getContentWeight(stack) : target.getCount()));
 					} else {
-						int c = (data.get(i).getCount() + item.getCount());
+						int c = (data.get(i).getCount() + target.getCount());
 						if (c > data.get(i).getMaxStackSize()) {
-							ItemStack copy = data.remove(i).copyWithCount(item.getMaxStackSize());
+							ItemStack copy = data.remove(i).copyWithCount(target.getMaxStackSize());
 							data.addFirst(copy.copyWithCount(copy.getCount() + getContentWeight(stack) > 256 ? 256 - getContentWeight(stack) : copy.getCount()));
-							data.addFirst(item.copyWithCount(item.getCount() + getContentWeight(stack) > 256 ? 256 - getContentWeight(stack) : c - item.getMaxStackSize()));
+							data.addFirst(target.copyWithCount(target.getCount() + getContentWeight(stack) > 256 ? 256 - getContentWeight(stack) : c - target.getMaxStackSize()));
 						} else {
 							ItemStack copy = data.remove(i);
-							copy.grow(item.getCount());
+							copy.grow(target.getCount());
 							data.addFirst(copy);
 						}
 					}
 				} else {
-					data.addFirst(item.copyWithCount(item.getCount() + getContentWeight(stack) > 256 ? 256 - getContentWeight(stack) : item.getCount()));
+					data.addFirst(target.copyWithCount(target.getCount() + getContentWeight(stack) > 256 ? 256 - getContentWeight(stack) : target.getCount()));
 				}
+                if (target.getItem() instanceof BundleHoldingItem) {
+                    stack.set(QuillData.BOMB, new BundleBomb(true));
+                }
 				stack.set(QuillData.BUNDLE, new BundleHoldingContents(data));
 				return true;
 			}
