@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.SlotAccess;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.*;
@@ -52,6 +53,11 @@ public class BundleHoldingItem extends Item {
 		return stack;
 	}
 
+    @Override
+    public boolean canFitInsideContainerItems() {
+        return true;
+    }
+
 	@Override
 	public boolean isBarVisible(ItemStack stack) {
 		return getContentWeight(stack) > 0;
@@ -73,8 +79,7 @@ public class BundleHoldingItem extends Item {
 		BundleHoldingContents data = stack.getOrDefault(QuillData.BUNDLE, BundleHoldingContents.EMPTY);
         BundleBomb fuse = stack.getOrDefault(QuillData.BOMB, BundleBomb.EMPTY);
         if (!lvl.isClientSide() && fuse.isBomb()) {
-            stack.shrink(1);
-            lvl.explode(null, target.damageSources().badRespawnPointExplosion(target.blockPosition().getCenter()), null, target.blockPosition().getCenter(), 5.0F, true, Level.ExplosionInteraction.BLOCK);
+            this.explode(stack, lvl, target);
         }
 		if (EnchantmentHelper.hasTag(stack, EnchantmentTags.CURSE)) {
 			if (!data.isEmpty()) {
@@ -82,6 +87,15 @@ public class BundleHoldingItem extends Item {
 			}
 		}
 	}
+
+    @Override
+    public boolean onEntityItemUpdate(ItemStack stack, ItemEntity target) {
+        BundleBomb fuse = stack.getOrDefault(QuillData.BOMB, BundleBomb.EMPTY);
+        if (target.level() instanceof ServerLevel lvl && fuse.isBomb()) {
+            this.explode(stack, lvl, target);
+        }
+        return super.onEntityItemUpdate(stack, target);
+    }
 
 	@Override
 	public boolean overrideStackedOnOther(ItemStack stack, Slot slot, ClickAction action, Player player) {
@@ -240,6 +254,11 @@ public class BundleHoldingItem extends Item {
 			target.playSound(sound, 0.8F, 0.8F + target.level().getRandom().nextFloat() * 0.4F);
 		}
 	}
+
+    public void explode(ItemStack stack, ServerLevel lvl , Entity target) {
+        stack.shrink(1);
+        lvl.explode(null, target.damageSources().badRespawnPointExplosion(target.blockPosition().getCenter()), null, target.blockPosition().getCenter(), 5.0F, true, Level.ExplosionInteraction.BLOCK);
+    }
 
 	public static boolean hasSelectedItem(ItemStack stack) {
 		BundleHoldingContents data = stack.getOrDefault(QuillData.BUNDLE, BundleHoldingContents.EMPTY);
