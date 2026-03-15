@@ -319,7 +319,7 @@ public class QuillEvents {
 			int i = 0;
 			for (Holder<Enchantment> e : book.keySet()) {
 				int p = Math.min(map.getLevel(e) == book.getLevel(e) ? book.getLevel(e) + 1 : book.getLevel(e), e.value().getMaxLevel());
-				boolean check = event.getLeft().is(Items.ENCHANTED_BOOK) || event.getLeft().supportsEnchantment(e);
+				boolean check = event.getLeft().is(Items.ENCHANTED_BOOK) || new ItemStack(event.getLeft().getItem()).supportsEnchantment(e);
 				for (Holder<Enchantment> target : map.keySet()) {
 					if ((e != target && !EnchantmentHelper.isEnchantmentCompatible(map.keySet(), e)) || (e == target && map.getLevel(e) >= p)) {
 						check = false;
