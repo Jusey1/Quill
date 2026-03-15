@@ -2,10 +2,11 @@
   "replace": false,
   "values": [
     "quill:auto_smelt",
-    "quill:sharpshooter",
-    "quill:spikes",
     "quill:blazing",
     "quill:deflecting",
+    "quill:magnetic",
+    "quill:sharpshooter",
+    "quill:spikes",
     "quill:torrent"
   ]
 }
