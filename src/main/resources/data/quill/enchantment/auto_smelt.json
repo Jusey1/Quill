@@ -5,11 +5,11 @@
   "supported_items": "#minecraft:pickaxes",
   "exclusive_set": "minecraft:silk_touch",
   "max_cost": {
-    "base": 25,
+    "base": 50,
     "per_level_above_first": 0
   },
   "min_cost": {
-    "base": 5,
+    "base": 20,
     "per_level_above_first": 0
   },
   "slots": [
@@ -17,5 +17,5 @@
   ],
   "anvil_cost": 2,
   "max_level": 1,
-  "weight": 5
+  "weight": 1
 }
