@@ -325,6 +325,7 @@ public class QuillEvents {
 						check = false;
 					} else if  (e == target && map.getLevel(e) < p) {
 						check = true;
+                        break;
 					}
 				}
 				if (check && (e.is(EnchantmentTags.CURSE) || p > map.getLevel(e))) {
@@ -377,12 +378,9 @@ public class QuillEvents {
 					if (recipe.isPresent()) {
 						ItemStack smelt = recipe.get().value().assemble(new SingleRecipeInput(ore.getItem()), lvl.registryAccess());
 						smelt.setCount(ore.getItem().getCount());
-						lvl.addFreshEntity(new ItemEntity(lvl, x, y, z, smelt));
-						if (!event.isCanceled()) {
-							lvl.sendParticles(ParticleTypes.FLAME, x, y, z, 4, 0.35, 0.35, 0.35, 0);
-							lvl.addFreshEntity(new ExperienceOrb(lvl, x, y, z, 2));
-							event.setCanceled(true);
-						}
+                        ore.setItem(smelt);
+						lvl.sendParticles(ParticleTypes.FLAME, x, y, z, 4, 0.35, 0.35, 0.35, 0);
+						lvl.addFreshEntity(new ExperienceOrb(lvl, x, y, z, 2));
 					}
 				}
 			}
