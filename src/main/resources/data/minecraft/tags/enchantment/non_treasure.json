@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "quill:auto_smelt",
+    "quill:blazing",
+    "quill:deflecting",
+    "quill:magnetic",
+    "quill:sharpshooter",
+    "quill:spikes",
+    "quill:torrent"
+  ]
+}
